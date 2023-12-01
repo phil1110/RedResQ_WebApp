@@ -1,0 +1,12 @@
+﻿@model int
+@{
+    ViewData["Title"] = "Privacy Policy";
+
+    Task.Run(() =>
+    {
+        Model++;
+    });
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy. Model: @Model</p>
