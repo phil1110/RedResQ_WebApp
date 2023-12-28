@@ -1,0 +1,74 @@
+﻿@page "/users"
+
+<PageTitle>User Overview</PageTitle>
+
+<h3>UserFetch</h3>
+
+<div class="container-fluid">
+	@if (_users.Count > 0)
+	{
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Username</th>
+					<th>Email</th>
+					<th>Birthdate</th>
+					<th>Gender</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (User user in _users)
+				{
+					<tr>
+						<td>@user.Id</td>
+						<td>@user.Username</td>
+						<td>@user.Email</td>
+						<td>@user.Birthdate.ToString("d")</td>
+						<td>@user.Gender.Name</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	}
+	else
+	{
+		<p><em>Loading...</em></p>
+	}
+</div>
+
+<div class="container-fluid text-center">
+	<button class="btn btn-primary" @onclick="()=>FetchUsers(null)">Fetch more Users</button>
+	<br />
+	<br />
+</div>
+
+@code {
+	List<User> _users = new List<User>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await FetchUsers(null);
+	}
+
+	async Task FetchUsers(int? amount)
+	{
+		User[] rcvdUsers;
+		long? id = null;
+
+		if (_users.Count > 0)
+		{
+			id = _users[_users.Count - 1].Id;
+		}
+
+		rcvdUsers = await UserService.Fetch(id, amount);
+
+		if (rcvdUsers != null)
+		{
+			_users.AddRange(rcvdUsers);
+			StateHasChanged();
+		}
+	}
+}
+
+
