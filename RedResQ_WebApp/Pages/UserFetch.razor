@@ -1,74 +1,184 @@
 ﻿@page "/users"
+@using RedResQ_WebApp.Lib.Services
+@using RedResQ_WebApp.Lib.Models
+@inject IJSRuntime JSRuntime
 
 <PageTitle>User Overview</PageTitle>
 
-<h3>UserFetch</h3>
 
 <div class="container-fluid">
-	@if (_users.Count > 0)
-	{
-		<table class="table">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Username</th>
-					<th>Email</th>
-					<th>Birthdate</th>
-					<th>Gender</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (User user in _users)
-				{
-					<tr>
-						<td>@user.Id</td>
-						<td>@user.Username</td>
-						<td>@user.Email</td>
-						<td>@user.Birthdate.ToString("d")</td>
-						<td>@user.Gender.Name</td>
-					</tr>
-				}
-			</tbody>
-		</table>
-	}
-	else
-	{
-		<p><em>Loading...</em></p>
-	}
+    <h3>User Overview</h3>
+
+    @if (_users.Count > 0)
+    {
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Birthdate</th>
+                    <th>Gender</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (User user in _users)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.Username</td>
+                        <td>@user.Email</td>
+                        <td>@user.Birthdate.ToString("d")</td>
+                        <td>@user.Gender.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="text-center mt-3">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }
 </div>
 
 <div class="container-fluid text-center">
-	<button class="btn btn-primary" @onclick="()=>FetchUsers(null)">Fetch more Users</button>
-	<br />
-	<br />
+    <button class="btn btn-primary mt-3" @onclick="()=>FetchUsers(null)">Fetch more Users</button>
+    <br />
+    <br />
 </div>
 
+<div class="container-fluid">
+    @if (_users.Count > 0 || (_foundUsers != null && _foundUsers.Any()))
+    {
+        <h3>Found Users</h3>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Birthdate</th>
+                    <th>Gender</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (User user in _foundUsers)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.Username</td>
+                        <td>@user.Email</td>
+                        <td>@user.Birthdate.ToString("d")</td>
+                        <td>@user.Gender.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<div class="container-fluid text-center">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" @bind="searchUsername" placeholder="Search by username" />
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" @onclick="SearchUser">Search</button>
+        </div>
+    </div>
+
+    <div>
+        <label>Delete User by ID:</label>
+        <input type="number" class="form-control" @bind="deleteUserId" />
+        <button class="btn btn-danger mt-3" @onclick="ShowDeleteConfirmation">Delete</button>
+    </div>
+</div>
+
+
 @code {
-	List<User> _users = new List<User>();
+    List<User> _users = new List<User>();
+    List<User> _foundUsers = new List<User>();
+    string searchUsername;
+    int deleteUserId;
 
-	protected override async Task OnInitializedAsync()
-	{
-		await FetchUsers(null);
-	}
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchUsers(null);
+    }
 
-	async Task FetchUsers(int? amount)
-	{
-		User[] rcvdUsers;
-		long? id = null;
+    async Task FetchUsers(int? amount)
+    {
+        Console.WriteLine("FetchUsers method called");
 
-		if (_users.Count > 0)
-		{
-			id = _users[_users.Count - 1].Id;
-		}
+        User[] rcvdUsers;
+        long? id = null;
 
-		rcvdUsers = await UserService.Fetch(id, amount);
+        if (_users.Count > 0)
+        {
+            id = _users[_users.Count - 1].Id;
+        }
 
-		if (rcvdUsers != null)
-		{
-			_users.AddRange(rcvdUsers);
-			StateHasChanged();
-		}
-	}
+        rcvdUsers = await UserService.Fetch(id, amount);
+
+        if (rcvdUsers != null)
+        {
+            _users.AddRange(rcvdUsers);
+            StateHasChanged();
+        }
+    }
+
+    async Task SearchUser()
+    {
+        // Klappt noch nicht ganz!
+
+        Console.WriteLine("SearchUser method called");
+
+        if (!string.IsNullOrWhiteSpace(searchUsername))
+        {
+            User foundUser = await UserService.Search(searchUsername);
+
+            if (foundUser != null)
+            {
+                Console.WriteLine($"User found: {foundUser.Username}");
+                _foundUsers = new List<User> { foundUser };
+                StateHasChanged();
+            }
+            else
+            {
+                Console.WriteLine("User not found");
+            }
+        }
+    }
+
+    async Task ShowDeleteConfirmation()
+    {
+        var result = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this user?");
+        if (result)
+        {
+            await DeleteUser();
+        }
+    }
+
+
+    async Task DeleteUser()
+    {
+        Console.WriteLine("DeleteUser method called");
+
+        if (deleteUserId > 0)
+        {
+            try
+            {
+                await UserService.Delete(deleteUserId);
+                Console.WriteLine($"User with ID {deleteUserId} successfully deleted");
+                _users.Clear();
+                await FetchUsers(null);
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error deleting user. Message: {ex.Message}");
+            }
+        }
+    }
 }
-
-

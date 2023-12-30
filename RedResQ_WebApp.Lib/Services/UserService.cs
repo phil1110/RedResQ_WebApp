@@ -42,5 +42,50 @@ namespace RedResQ_WebApp.Lib.Services
 
 			return null!;
 		}
-	}
+
+        public async static Task<User?> Search(string username)
+        {
+            HttpClient client = Consts.GetHttpClient();
+
+            string path = $"user/search?query={username}";
+
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(path);
+                if (response.IsSuccessStatusCode)
+                {
+                    User? user = await response.Content.ReadFromJsonAsync<User>();
+                    return user;
+                }
+                else
+                {
+                    Console.WriteLine($"Error searching user. Status code: {response.StatusCode}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error searching user. Message: {ex.Message}");
+            }
+
+            return null;
+        }
+
+
+        public async static Task Delete(long id)
+		{
+			HttpClient client = Consts.GetHttpClient();
+
+			string path = $"user/delete/?id={id}";
+
+            try
+            {
+                await client.DeleteAsync(path);
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error deleting user. Message: {ex.Message}");
+            }
+
+        }
+    }
 }
