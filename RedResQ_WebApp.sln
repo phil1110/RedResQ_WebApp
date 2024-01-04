@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedResQ_WebApp.Lib", "RedResQ_WebApp.Lib\RedResQ_WebApp.Lib.csproj", "{023039CD-9B27-4138-A413-96D993A7A49A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedResQ_WebApp", "RedResQ_WebApp\RedResQ_WebApp.csproj", "{C843158D-7D3F-477F-A4C2-6CCF9D9DA68F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedResQ_WebApp", "RedResQ_WebApp\RedResQ_WebApp.csproj", "{C843158D-7D3F-477F-A4C2-6CCF9D9DA68F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

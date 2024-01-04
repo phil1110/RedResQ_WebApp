@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using RedResQ_WebApp.Data;
 using RedResQ_WebApp.Lib.Services;
 
 namespace RedResQ_WebApp
@@ -14,7 +13,7 @@ namespace RedResQ_WebApp
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
-            builder.Services.AddSingleton<WeatherForecastService>();
+            //builder.Services.AddSingleton<WeatherForecastService>();
 
             var app = builder.Build();
 
