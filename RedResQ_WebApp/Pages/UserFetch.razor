@@ -19,6 +19,8 @@
                     <th>Email</th>
                     <th>Birthdate</th>
                     <th>Gender</th>
+                    <th>Action</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -30,6 +32,11 @@
                         <td>@user.Email</td>
                         <td>@user.Birthdate.ToString("d")</td>
                         <td>@user.Gender.Name</td>
+                        <td>
+                            <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="()=>ShowDeleteConfirmation(user.Id)">
+                                <i class="oi oi-trash text-danger"></i>
+                            </button>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -46,62 +53,63 @@
 </div>
 
 <div class="container-fluid text-center">
-    <button class="btn btn-primary mt-3" @onclick="()=>FetchUsers(null)">Fetch more Users</button>
+    <button class="btn btn-primary mt-3" @onclick="()=>FetchUsers(null)">Show more Users</button>
     <br />
     <br />
 </div>
 
 <div class="container-fluid">
-    @if (_users.Count > 0 || (_foundUsers != null && _foundUsers.Any()))
-    {
-        <h3>Found Users</h3>
-        <table class="table table-striped mt-3">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Birthdate</th>
-                    <th>Gender</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (User user in _foundUsers)
-                {
-                    <tr>
-                        <td>@user.Id</td>
-                        <td>@user.Username</td>
-                        <td>@user.Email</td>
-                        <td>@user.Birthdate.ToString("d")</td>
-                        <td>@user.Gender.Name</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
+    <h3>Search User</h3>
+    <div>
+        <label>Search User by Username:</label>
+        <input type="text" class="form-control" @bind="searchUsername" />
+    </div>
+    <button class="btn btn-primary mt-3" @onclick="SearchUser">Search</button>
 </div>
 
-<div class="container-fluid text-center">
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" @bind="searchUsername" placeholder="Search by username" />
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" @onclick="SearchUser">Search</button>
-        </div>
-    </div>
 
+@if (_foundUsers.Count > 0)
+{
+    <h3>Found Users</h3>
+    <table class="table table-striped mt-3">
+        <tbody>
+            @foreach (User user in _foundUsers)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Username</td>
+                    <td>@user.Email</td>
+                    <td>@user.Birthdate.ToString("d")</td>
+                    <td>@user.Gender.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@* 
+<div class="container-fluid">
+    <h3>Delete User</h3>
     <div>
         <label>Delete User by ID:</label>
         <input type="number" class="form-control" @bind="deleteUserId" />
-        <button class="btn btn-danger mt-3" @onclick="ShowDeleteConfirmation">Delete</button>
     </div>
 </div>
+<div class="container-fluid text-center">
+    <button class="btn btn-danger mt-3" @onclick="() => ShowDeleteConfirmation(deleteUserId)">Delete</button>
+    <br />
+    <br />
+</div>
+ *@
+
 
 
 @code {
     List<User> _users = new List<User>();
     List<User> _foundUsers = new List<User>();
-    string searchUsername;
-    int deleteUserId;
+    string? searchUsername;
+    long deleteUserId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -131,32 +139,48 @@
 
     async Task SearchUser()
     {
-        // Klappt noch nicht ganz!
-
-        Console.WriteLine("SearchUser method called");
-
-        if (!string.IsNullOrWhiteSpace(searchUsername))
+        try
         {
-            User foundUser = await UserService.Search(searchUsername);
+            Console.WriteLine("SearchUser method called");
 
-            if (foundUser != null)
+            if (!string.IsNullOrWhiteSpace(searchUsername))
             {
-                Console.WriteLine($"User found: {foundUser.Username}");
-                _foundUsers = new List<User> { foundUser };
-                StateHasChanged();
+                User? foundUser = await UserService.Search(searchUsername);
+
+                if (foundUser != null)
+                {
+                    Console.WriteLine($"User found: {foundUser.Username}");
+                    _foundUsers = new List<User> { foundUser };
+                }
+                else
+                {
+                    Console.WriteLine("User not found");
+                }
             }
             else
             {
-                Console.WriteLine("User not found");
+                Console.WriteLine("Please enter a username to search.");
             }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error searching user. Message: {ex.Message}");
+        }
+        finally
+        {
+            StateHasChanged();
         }
     }
 
-    async Task ShowDeleteConfirmation()
+
+
+
+    async Task ShowDeleteConfirmation(long userId)
     {
         var result = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this user?");
         if (result)
         {
+            deleteUserId = userId;
             await DeleteUser();
         }
     }
@@ -172,8 +196,8 @@
             {
                 await UserService.Delete(deleteUserId);
                 Console.WriteLine($"User with ID {deleteUserId} successfully deleted");
-                _users.Clear();
-                await FetchUsers(null);
+                _users.RemoveAll(user => user.Id == deleteUserId);
+                StateHasChanged();
             }
             catch (HttpRequestException ex)
             {
@@ -181,4 +205,5 @@
             }
         }
     }
+
 }

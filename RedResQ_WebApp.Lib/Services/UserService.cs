@@ -52,10 +52,26 @@ namespace RedResQ_WebApp.Lib.Services
             try
             {
                 HttpResponseMessage response = await client.GetAsync(path);
+                Console.WriteLine(response);
+
+                // API liefert anscheinend nicht einen User sondern meherere
+                // Ich muss aber einen User erhalten
+
                 if (response.IsSuccessStatusCode)
                 {
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(jsonResponse);
+
+
                     User? user = await response.Content.ReadFromJsonAsync<User>();
-                    return user;
+                    if (user != null)
+                    {
+                        return user;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error: Invalid JSON response for user.");
+                    }
                 }
                 else
                 {
