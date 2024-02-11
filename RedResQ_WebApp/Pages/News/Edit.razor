@@ -1,7 +1,213 @@
-﻿@page "/news/edit"
+﻿@page "/news/edit/{id?}"
+@inject IJSRuntime JsRuntime
 
-<h3>Edit</h3>
+<table class="table table-striped table-responsive mt-3">
+    <thead>
+        <tr>
+            <th>Article ID</th>
+            <th />
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="w-50 h-100">
+                <InputNumber class=" form-control w-100 h-100 text-end align-middle" TValue="long?" @bind-Value="_id" />
+            </td>
+            <td class="w-50 text-center">
+                <button class="btn btn-primary w-50 " @onclick="() => GetArticle()">
+                    <span><i class="oi oi-dial"></i> Get</span>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<br />
+
+@if(_article != null)
+{
+    <div class="container w-75">
+
+        <div class="w-100 text-center h2">
+            <h2 class="fw-bold">Article overview</h2>
+        </div>
+
+        <table class="table table table-responsive table-bordered mt-3">
+            <tbody>
+                <tr>
+                    <td class="w-25 text-end">
+                        <span class="fw-bold">ID</span>
+                    </td>
+                    <td class="w-75 text-center">
+                        <span>@(_article?.Id != null ? _article?.Id : "Empty")</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 text-end">
+                        <span class="fw-bold">Title</span>
+                    </td>
+                    <td class="w-75 text-center">
+                        <InputText class="form-control" @bind-Value="_article!.Title"></InputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 text-end">
+                        <span class="fw-bold">Content</span>
+                    </td>
+                    <td class="w-75 text-center">
+                        <InputTextArea class="form-control" @bind-Value="_article!.Content"></InputTextArea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 text-end">
+                        <span class="fw-bold">Author</span>
+                    </td>
+                    <td class="w-75 text-center">
+                        <span>@(_article?.Author != null ? _article?.Author : "Empty")</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 text-end">
+                        <span class="fw-bold">Date</span>
+                    </td>
+                    <td class="w-75 text-center">
+                        <span>@(_article?.Date != null ? _article?.Date.ToString("d") : "Empty")</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 text-end">
+                        <span class="fw-bold">Language ID</span>
+                    </td>
+                    <td class="w-75 text-center">
+                        <span>@(_article?.Language.Id != null ? _article?.Language.Id : "Empty")</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 text-end">
+                        <span class="fw-bold">Language name</span>
+                    </td>
+                    <td class="w-75 text-center">
+                        <span>@(_article?.Language.Name != null ? _article?.Language.Name : "Empty")</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 text-end">
+                        <span class="fw-bold">Image ID</span>
+                    </td>
+                    <td class="w-75 text-center">
+                        <span>@(_article?.Image?.Id != null ? _article?.Image?.Id : "Empty")</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 text-end">
+                        <span class="fw-bold">Image description</span>
+                    </td>
+                    <td class="w-75 text-center">
+                        <span>@(_article?.Image?.Description != null ? _article?.Image?.Description : "Empty")</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 text-end">
+                        <span class="fw-bold">Image bytes</span>
+                    </td>
+                    <td class="w-75 text-center">
+                        <span>@(_article?.Image?.Bytes != null ? _article?.Image?.Bytes.ToString() : "Empty")</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 text-end">
+                        <span class="fw-bold">Country ID</span>
+                    </td>
+                    <td class="w-75 text-center">
+                        <span>@(_article?.Country.Id != null ? _article?.Country.Id : "Empty")</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 text-end">
+                        <span class="fw-bold">Country name</span>
+                    </td>
+                    <td class="w-75 text-center">
+                        <span>@(_article?.Country.CountryName != null ? _article?.Country.CountryName : "Empty")</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            <button class="btn btn-warning btn-outline-dark w-50" @onclick="() => UpdateArticle()">
+                <span>Submit</span>
+            </button>
+        </div>
+    </div>
+}
 
 @code {
+    [Parameter]
+    public string? ID { get; set; }
 
+    long? _id;
+
+    Article? _article = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ID != null)
+        {
+            try
+            {
+                _id = Convert.ToInt64(ID);
+            }
+            catch
+            {
+                _id = 1;
+            }
+        }
+        else
+        {
+            _id = 1;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await GetArticle();
+
+            StateHasChanged();
+        }
+    }
+
+    private async Task GetArticle()
+    {
+        if (_id.HasValue)
+        {
+            var article = await NewsService.Get(_id!.Value);
+
+            if (article != null)
+            {
+                _article = article;
+
+                return;
+            }
+            else
+            {
+                _article = null;
+
+                await JsRuntime.InvokeVoidAsync("alert", $"Error!\nNo article with ID {_id.ToString()} was found!");
+
+                return;
+            }
+        }
+
+        _article = null;
+
+        await JsRuntime.InvokeVoidAsync("alert", "Error!\nID has no value!");
+    }
+
+    private async Task UpdateArticle()
+    {
+        await NewsService.Update(_article!);
+    }
 }
+

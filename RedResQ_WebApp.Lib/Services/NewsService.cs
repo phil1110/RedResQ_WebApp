@@ -47,6 +47,56 @@ namespace RedResQ_WebApp.Lib.Services
             return null!;
         }
 
+		public static async Task<Article> Get(long id)
+		{
+			var client = Consts.GetHttpClient();
+            PathBuilder pathBuilder = new PathBuilder("news/get");
+
+            pathBuilder.AddParameter("id", id.ToString()!);
+
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(pathBuilder.ToString());
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Article? article = await response.Content.ReadFromJsonAsync<Article>();
+
+                    return article!;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return null!;
+        }
+
+		public static async Task Update(Article article)
+		{
+            var client = Consts.GetHttpClient();
+            PathBuilder pathBuilder = new PathBuilder("news/update");
+
+            try
+            {
+				HttpResponseMessage response = await client.PutAsJsonAsync<Article>(pathBuilder.ToString(), article);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var temp = await response.Content.ReadFromJsonAsync<object>();
+
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+			return;
+        }
+
 		public async static Task CreateNews(string title, string content, string author, DateTime date, int language, int image, int location)
 		{
 			HttpClient client = Consts.GetHttpClient();

@@ -11,7 +11,7 @@
     </thead>
     <tbody>
         <tr>
-            <td><InputSelect TValue="long?" @bind-Value="@_countryId">
+            <td><InputSelect class="w-50" TValue="long?" @bind-Value="@_countryId">
 
                     <option value="@(-1)">None</option>
 
@@ -22,7 +22,7 @@
                 </InputSelect>
             </td>
             <td>
-                <InputSelect TValue="long?" @bind-Value="@_languageId">
+                <InputSelect class="w-50" TValue="long?" @bind-Value="@_languageId">
 
                     <option value ="@(-1)">None</option>
 
@@ -67,9 +67,7 @@
                     <td>@article.Language.Name</td>
                     <td>@article.Image?.Description</td>
                     <td>@article.Country.CountryName</td>
-                    <td>
-                        
-                    </td>
+                    <td></td>
                 </tr>
             }
         </tbody>
