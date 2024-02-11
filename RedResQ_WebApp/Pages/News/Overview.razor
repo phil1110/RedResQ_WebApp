@@ -1,0 +1,37 @@
+﻿@page "/news"
+
+<div class="h-100 d-flex flex-column justify-content-between">
+
+    <NavLink class="@(_navLinkClasses + "btn btn-primary btn-outline-primary")" href="/news/get">
+        <span><span class="oi oi-dial" aria-hidden="true"></span> Get</span>
+    </NavLink>
+
+    <br />
+
+    <NavLink class="@(_navLinkClasses + "btn btn-primary btn-outline-primary")" href="/news/fetch">
+        <span><span class="oi oi-list" aria-hidden="true"></span> Fetch</span>
+    </NavLink>
+
+    <br />
+
+    <NavLink class="@(_navLinkClasses + "btn btn-success btn-outline-success")" href="/news/publish">
+        <span><span class="oi oi-cloud-upload" aria-hidden="true"></span> Publish</span>
+    </NavLink>
+
+    <br />
+
+    <NavLink class="@(_navLinkClasses + "btn btn-warning btn-outline-warning")" href="/news/edit">
+        <span><span class="oi oi-pencil" aria-hidden="true"></span> Edit</span>
+    </NavLink>
+
+    <br />
+
+    <NavLink class="@(_navLinkClasses + "btn btn-danger btn-outline-danger")" href="/news/delete">
+        <span><span class="oi oi-trash" aria-hidden="true"></span> Delete</span>
+    </NavLink>
+</div>
+
+@code {
+    string _navLinkClasses = "nav-link text-black text-center fs-1 fs-md-1 fs-lg-1 " +
+    "border-2 d-flex flex-column flex-grow-1 justify-content-center align-items-center ";
+}

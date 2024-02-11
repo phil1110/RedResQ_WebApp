@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace RedResQ_WebApp.Lib.Models
@@ -20,9 +21,11 @@ namespace RedResQ_WebApp.Lib.Models
 
         #region Properties
 
-        public long Id { get; private set; }
+        [JsonRequired]
+        public long Id { get; set; }
 
-        public string CountryName { get; private set; }
+        [JsonRequired]
+        public string CountryName { get; set; }
 
         #endregion
     }

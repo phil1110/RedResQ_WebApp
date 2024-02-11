@@ -4,8 +4,8 @@ using System.Data;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RedResQ_WebApp.Lib.Models
 {
@@ -14,7 +14,7 @@ namespace RedResQ_WebApp.Lib.Models
         #region Constructor
 
         public Article(long id, string title, string content, string author, DateTime date, Language language,
-            Image image, Location location)
+            Country country, Image? image = null)
         {
             Id = id;
             Title = title;
@@ -23,28 +23,35 @@ namespace RedResQ_WebApp.Lib.Models
             Date = date;
             Language = language;
             Image = image;
-            Location = location;
+            Country = country;
         }
 
         #endregion
 
         #region Properties
 
-        public long Id { get; private set; }
+        [JsonRequired]
+        public long Id { get; set; }
 
-        public string Title { get; private set; }
+        [JsonRequired]
+        public string Title { get; set; }
 
-        public string Content { get; private set; }
+        [JsonRequired]
+        public string Content { get; set; }
 
-        public string Author { get; private set; }
+        [JsonRequired]
+        public string Author { get; set; }
 
-        public DateTime Date { get; private set; }
+        [JsonRequired]
+        public DateTime Date { get; set; }
 
-        public Language Language { get; private set; }
+        [JsonRequired]
+        public Language Language { get; set; }
 
-        public Image Image { get; private set; }
+        public Image? Image { get; set; }
 
-        public Location Location { get; private set; }
+        [JsonRequired]
+        public Country Country { get; set; }
 
         #endregion
     }

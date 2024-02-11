@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RedResQ_WebApp.Lib.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
@@ -9,6 +10,43 @@ namespace RedResQ_WebApp.Lib.Services
 {
 	public class NewsService
 	{
+		public static async Task<Article[]> FetchArticles(long? articleId, long? countryId, long? languageId)
+		{
+            var client = Consts.GetHttpClient();
+            PathBuilder pathBuilder = new PathBuilder("news/fetch");
+
+			if (articleId.HasValue)
+			{
+				pathBuilder.AddParameter("articleId", articleId.ToString()!);
+			}
+			if(countryId.HasValue)
+			{
+                pathBuilder.AddParameter("countryId", countryId.ToString()!);
+            }
+            if (languageId.HasValue)
+            {
+                pathBuilder.AddParameter("languageId", languageId.ToString()!);
+            }
+
+			try
+			{
+                HttpResponseMessage response = await client.GetAsync(pathBuilder.ToString());
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Article[]? articles = await response.Content.ReadFromJsonAsync<Article[]>();
+
+                    return articles!;
+                }
+            }
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+            }
+
+            return null!;
+        }
+
 		public async static Task CreateNews(string title, string content, string author, DateTime date, int language, int image, int location)
 		{
 			HttpClient client = Consts.GetHttpClient();

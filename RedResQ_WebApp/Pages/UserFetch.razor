@@ -72,6 +72,17 @@
 {
     <h3>Found Users</h3>
     <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Birthdate</th>
+                <th>Gender</th>
+                <th>Action</th>
+
+            </tr>
+        </thead>
         <tbody>
             @foreach (User user in _foundUsers)
             {
@@ -81,6 +92,11 @@
                     <td>@user.Email</td>
                     <td>@user.Birthdate.ToString("d")</td>
                     <td>@user.Gender.Name</td>
+                    <td>
+                        <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="()=>ShowDeleteConfirmation(user.Id)">
+                            <i class="oi oi-trash text-danger"></i>
+                        </button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -145,12 +161,12 @@
 
             if (!string.IsNullOrWhiteSpace(searchUsername))
             {
-                User? foundUser = await UserService.Search(searchUsername);
+                User[]? foundUsers = await UserService.Search(searchUsername);
 
-                if (foundUser != null)
+                if (foundUsers != null)
                 {
-                    Console.WriteLine($"User found: {foundUser.Username}");
-                    _foundUsers = new List<User> { foundUser };
+                    _foundUsers = new List<User>();
+                    _foundUsers.AddRange(foundUsers);
                 }
                 else
                 {

@@ -10,10 +10,11 @@ namespace RedResQ_WebApp.Lib.Models
     {
         #region Constructor
 
-        public Image(long id, string source)
+        public Image(long id, string description, byte[] bytes)
         {
             Id = id;
-            Source = source;
+            Description = description;
+            Bytes = bytes;
         }
 
         #endregion
@@ -22,7 +23,9 @@ namespace RedResQ_WebApp.Lib.Models
 
         public long Id { get; private set; }
 
-        public string Source { get; private set; }
+        public string Description { get; private set; }
+
+        public byte[] Bytes { get; private set; }
 
         #endregion
     }

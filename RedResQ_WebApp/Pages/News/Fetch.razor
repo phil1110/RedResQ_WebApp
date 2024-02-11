@@ -1,0 +1,129 @@
+﻿@page "/news/fetch"
+
+<h3>Filter options</h3>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Country ID</th>
+            <th>Language ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><InputSelect TValue="long?" @bind-Value="@_countryId">
+
+                    <option value="@(-1)">None</option>
+
+                    @foreach (Country? country in _countries)
+                    {
+                        <option value="@country.Id">@country.CountryName</option>
+                    }
+                </InputSelect>
+            </td>
+            <td>
+                <InputSelect TValue="long?" @bind-Value="@_languageId">
+
+                    <option value ="@(-1)">None</option>
+
+                    @foreach (Language? language in _languages)
+                    {
+                        <option value="@language.Id">@language.Name</option>
+                    }
+                </InputSelect>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<h3>Fetch</h3>
+
+@if (_articles.Count > 0)
+{
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Author</th>
+                <th>Date</th>
+                <th>Language</th>
+                <th>Image description</th>
+                <th>Country</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Article article in _articles)
+            {
+                <tr>
+                    <td>@article.Id</td>
+                    <td>@article.Title</td>
+                    <td>@(article.Content.Length > 15 ? article.Content.Substring(0, 15) + "..." : article.Content)</td>
+                    <td>@article.Author</td>
+                    <td>@article.Date.ToString("d")</td>
+                    <td>@article.Language.Name</td>
+                    <td>@article.Image?.Description</td>
+                    <td>@article.Country.CountryName</td>
+                    <td>
+                        
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    if (_showButton)
+    {
+        <div class="w-100 text-center">
+            <button class="btn btn-primary w-50" @onclick="() => FetchArticles()">
+                <span>Load more Articles</span>
+            </button>
+        </div>
+    }
+}
+
+@code {
+    private List<Article> _articles;
+
+    private List<Country> _countries;
+    private List<Language> _languages;
+
+    long? _articleId = null;
+    long? _countryId = null;
+    long? _languageId = null;
+
+    bool _showButton = true;
+
+    public Fetch()
+    {
+        _countries = new List<Country>();
+        _languages = new List<Language>();
+        _articles = new List<Article>();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _countries.AddRange(await CountryService.Fetch());
+        _languages.AddRange(await LanguageService.Fetch());
+
+        await FetchArticles();
+    }
+
+    private async Task FetchArticles()
+    {
+        var articles = await NewsService.FetchArticles(_articleId, (_countryId > -1 ? _countryId : null), (_languageId > -1 ? _languageId : null));
+
+        if (articles != null)
+        {
+            _articles.AddRange(articles);
+
+            _articleId = _articles[_articles.Count - 1].Id;
+        }
+        else
+        {
+            _showButton = false;
+        }
+    }
+}

@@ -13,26 +13,19 @@ namespace RedResQ_WebApp.Lib.Services
 		public async static Task<User[]> Fetch(long? id, int? amount)
 		{
 			HttpClient client = Consts.GetHttpClient();
-
-			string path = "user/fetch";
+            PathBuilder pathBuilder = new PathBuilder("user/fetch");
 
 			if (id.HasValue)
 			{
-				path += "?id=" + id.Value;
-			}
-			if (amount.HasValue)
-			{
-				if (path.Contains('?'))
-				{
-					path += "&amount=" + amount.Value;
-				}
-				else
-				{
-					path += "?amount=" + amount.Value;
-				}
+                pathBuilder.AddParameter("id", $"{id.Value}");
 			}
 
-			HttpResponseMessage response = await client.GetAsync(path);
+            if (amount.HasValue)
+            {
+                pathBuilder.AddParameter("amount", $"{amount.Value}");
+			}
+
+			HttpResponseMessage response = await client.GetAsync(pathBuilder.ToString());
 			if (response.IsSuccessStatusCode)
 			{
 				User[]? users = await response.Content.ReadFromJsonAsync<User[]>();
@@ -43,15 +36,16 @@ namespace RedResQ_WebApp.Lib.Services
 			return null!;
 		}
 
-        public async static Task<User?> Search(string username)
+        public async static Task<User[]?> Search(string username)
         {
             HttpClient client = Consts.GetHttpClient();
+            PathBuilder pathBuilder = new PathBuilder("user/search");
 
-            string path = $"user/search?query={username}";
+            pathBuilder.AddParameter("query", username);
 
             try
             {
-                HttpResponseMessage response = await client.GetAsync(path);
+                HttpResponseMessage response = await client.GetAsync(pathBuilder.ToString());
                 Console.WriteLine(response);
 
                 // API liefert anscheinend nicht einen User sondern meherere
@@ -63,10 +57,10 @@ namespace RedResQ_WebApp.Lib.Services
                     Console.WriteLine(jsonResponse);
 
 
-                    User? user = await response.Content.ReadFromJsonAsync<User>();
-                    if (user != null)
+                    User[]? users = await response.Content.ReadFromJsonAsync<User[]>();
+                    if (users != null)
                     {
-                        return user;
+                        return users;
                     }
                     else
                     {
@@ -90,12 +84,13 @@ namespace RedResQ_WebApp.Lib.Services
         public async static Task Delete(long id)
 		{
 			HttpClient client = Consts.GetHttpClient();
+            PathBuilder pathBuilder = new PathBuilder("user/delete");
 
-			string path = $"user/delete/?id={id}";
+            pathBuilder.AddParameter("id", $"{id}");
 
             try
             {
-                await client.DeleteAsync(path);
+                await client.DeleteAsync(pathBuilder.ToString());
             }
             catch (HttpRequestException ex)
             {

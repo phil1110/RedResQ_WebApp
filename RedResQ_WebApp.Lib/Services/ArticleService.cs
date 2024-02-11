@@ -12,7 +12,7 @@ namespace RedResQ_WebApp.Lib.Services
 {
     public static class ArticleService
     {
-        public static async Task<Article[]> GetArticles(long? id = null)
+        public static async Task<Article[]> Fetch(long? id = null)
         {
             HttpClient client = Consts.GetHttpClient();
 
