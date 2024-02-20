@@ -1,4 +1,5 @@
 ﻿@page "/createNews"
+@attribute [Authorize(Roles = "Administrator")]
 @using RedResQ_WebApp.Lib.Services
 
 <div class="container mt-4">

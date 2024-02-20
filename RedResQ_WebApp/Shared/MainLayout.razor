@@ -1,4 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using RedResQ_WebApp.Authentication;
+@inherits LayoutComponentBase
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
 
 <PageTitle>RedResQ_WebApp</PageTitle>
 
@@ -8,8 +11,30 @@
     </div>
 
     <main>
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <AuthorizeView>
+                <Authorized>
+                    <a @onclick="Logout" href="javascript:void(0)">Logout</a>
+                </Authorized>
+                <NotAuthorized>
+                    <a href="/login">Login</a>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+
+
         <div class="container-fluid h-100 w-100 pt-4 pb-4">
             @Body
         </div>
     </main>
 </div>
+
+@code{
+    private async Task Logout()
+    {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(null);
+        navManager.NavigateTo("/", true);
+    }
+}

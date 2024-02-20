@@ -1,0 +1,102 @@
+﻿@page "/showArticles"
+@attribute [Authorize(Roles = "Administrator")]
+@using RedResQ_WebApp.Lib.Models
+@using RedResQ_WebApp.Lib.Services
+
+<div class="row">
+    <div class="col-md-6">
+        <label for="countryFilter">Filter by Country:</label>
+        <select class="form-control" @bind="selectedCountryId">
+            <option value="">All</option>
+            @if (countries != null)
+            {
+                @foreach (var country in countries)
+                {
+                    <option value="@country.Id">@country.CountryName</option>
+                }
+            }
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label for="languageFilter">Filter by Language:</label>
+        <select class="form-control" @bind="selectedLanguageId">
+            <option value="">All</option>
+            @if (languages != null)
+            {
+                @foreach (var language in languages)
+                {
+                    <option value="@language.Id">@language.Name</option>
+                }
+            }
+        </select>
+    </div>
+</div>
+
+<button class="btn btn-primary mt-3" @onclick="LoadArticles">Fetch More</button> 
+
+<div class="mt-4">
+    @if (articles != null)
+    {
+        @foreach (var article in articles)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">@article.Title</h4>
+                    <p class="card-text">@article.Content</p>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Loading articles...</p>
+    }
+</div>
+
+@code {
+    private List<Article>? articles;
+    private List<Country>? countries;
+    private List<Language>? languages;
+    private long? selectedCountryId;
+    private long? selectedLanguageId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // articles = await NewsService.GetArticles(countryId: selectedCountryId, languageId: selectedLanguageId);
+        // countries = await NewsService.GetCountries();
+        // languages = await NewsService.GetLanguages();
+    }
+
+    private async Task LoadArticles()
+    {
+        // try
+        // {
+        //     int? amount = 10;
+        //     Console.WriteLine("FetchUsers method called");
+
+        //     List<Article>? rcvdAtricle;
+        //     long? id = null;
+
+        //     if (articles!.Count > 0)
+        //     {
+        //         id = articles[articles.Count - 1].Id;
+        //     }
+
+        //     rcvdAtricle = await NewsService.GetArticles(id, amount);
+
+        //     if (rcvdAtricle != null)
+        //     {
+        //         articles.AddRange(rcvdAtricle);
+        //         StateHasChanged();
+        //     }
+        // }
+        // catch (Exception)
+        // {
+        //     // muss noch was kommen
+        //     throw;
+        // }
+        
+    }
+}
+ 
