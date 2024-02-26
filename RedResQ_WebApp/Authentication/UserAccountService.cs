@@ -15,7 +15,7 @@ namespace RedResQ_WebApp.Authentication
             _users = new List<UserAccount> 
             { 
                 new UserAccount {UserName = "admin", Password = "admin", Role = "Administrator"},
-                new UserAccount {UserName = "user", Password = "user", Role = "user"}
+                new UserAccount {UserName = "user", Password = "user", Role = "User"}
             };
 
         }
@@ -80,8 +80,6 @@ namespace RedResQ_WebApp.Authentication
 
                 var response = await httpClient.GetAsync(requestUri);
 
-                System.Diagnostics.Debug.WriteLine($"{response}");
-                System.Diagnostics.Debug.WriteLine($"{response.StatusCode}");
 
                 if (response.IsSuccessStatusCode)
                 {
