@@ -4,11 +4,13 @@
 
 .top-row {
     height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
+    background: linear-gradient(to right, #A8271C, #600C05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Weicher Schatten hinzugefügt */
 }
 
 .navbar-brand {
     font-size: 1.1rem;
+    transition: color 0.3s ease; /* Glatter Übergang für Farbänderung */
 }
 
 .oi {
@@ -16,11 +18,13 @@
     font-size: 1.1rem;
     vertical-align: text-top;
     top: -2px;
+    transition: transform 0.3s ease; /* Glatter Übergang für Transformation */
 }
 
 .nav-item {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
+    transition: background-color 0.3s ease; /* Glatter Übergang für Hintergrundfarbe */
 }
 
     .nav-item:first-of-type {
@@ -38,17 +42,18 @@
         display: flex;
         align-items: center;
         line-height: 3rem;
+        transition: background-color 0.3s ease; /* Glatter Übergang für Hintergrundfarbe */
     }
 
-.nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.25);
-    color: white;
-}
+        .nav-item ::deep a.active {
+            background-color: rgba(168, 39, 28, 0.3); /* Erhöhte Transparenz */
+            color: white;
+        }
 
-.nav-item ::deep a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
-}
+        .nav-item ::deep a:hover {
+            background-color: rgba(168, 39, 28, 0.2); /* Erhöhte Transparenz */
+            color: white;
+        }
 
 @media (min-width: 641px) {
     .navbar-toggler {
@@ -56,13 +61,13 @@
     }
 
     .collapse {
-        /* Never collapse the sidebar for wide screens */
         display: block;
     }
-    
+
     .nav-scrollable {
-        /* Allow sidebar to scroll for tall menus */
         height: calc(100vh - 3.5rem);
         overflow-y: auto;
+        background: linear-gradient(to bottom, #A8271C, #600C05);
+        box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1); /* Weicher Innen-Schatten für Tiefe */
     }
 }
