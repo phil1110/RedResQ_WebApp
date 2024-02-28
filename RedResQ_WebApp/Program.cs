@@ -1,3 +1,4 @@
+using FisSst.BlazorMaps.DependencyInjection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
@@ -21,7 +22,9 @@ namespace RedResQ_WebApp
             builder.Services.AddScoped<ProtectedSessionStorage>();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             builder.Services.AddSingleton<UserAccountService>();
-            //builder.Services.AddSingleton<WeatherForecastService>();
+
+            // Service for Map
+            builder.Services.AddBlazorLeafletMaps();
 
             var app = builder.Build();
 
