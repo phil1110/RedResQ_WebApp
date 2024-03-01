@@ -1,15 +1,65 @@
 ﻿@page "/users"
-@attribute [Authorize(Roles = "Administrator")] 
+@attribute [Authorize(Roles = "Administrator")]
 @using RedResQ_WebApp.Lib.Services
 @using RedResQ_WebApp.Lib.Models
 @inject IJSRuntime JSRuntime
 
 <PageTitle>User Overview</PageTitle>
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
 
 <div class="container-fluid">
     <h3>User Overview</h3>
+    <br />
+    <div class="d-flex align-items-center">
+        <input type="text" class="form-control me-2" placeholder="Username" @bind="searchUsername" />
+        <button class="btn btn-primary" @onclick="SearchUser">Search</button>
+    </div>
+</div>
 
+
+<div class="container-fluid">
+
+    @if (_foundUsers.Count > 0)
+    {
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Birthdate</th>
+                    <th>Gender</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (User user in _foundUsers)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.Username</td>
+                        <td>@user.Email</td>
+                        <td>@user.Birthdate.ToString("d")</td>
+                        <td>@user.Gender.Name</td>
+                        <td>
+                            <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="()=>ShowDeleteConfirmation(user.Id)">
+                                <i class="oi oi-trash text-danger"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+
+
+
+<div class="container-fluid">
     @if (_users.Count > 0)
     {
         <table class="table table-striped mt-3">
@@ -34,6 +84,9 @@
                         <td>@user.Birthdate.ToString("d")</td>
                         <td>@user.Gender.Name</td>
                         <td>
+                            <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="()=>EditUser(user.Id)">
+                                <i class="fa fa-pencil-alt"></i>
+                            </button>
                             <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="()=>ShowDeleteConfirmation(user.Id)">
                                 <i class="oi oi-trash text-danger"></i>
                             </button>
@@ -58,68 +111,6 @@
     <br />
     <br />
 </div>
-
-<div class="container-fluid">
-    <h3>Search User</h3>
-    <div>
-        <label>Search User by Username:</label>
-        <input type="text" class="form-control" @bind="searchUsername" />
-    </div>
-    <button class="btn btn-primary mt-3" @onclick="SearchUser">Search</button>
-</div>
-
-
-@if (_foundUsers.Count > 0)
-{
-    <h3>Found Users</h3>
-    <table class="table table-striped mt-3">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Birthdate</th>
-                <th>Gender</th>
-                <th>Action</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (User user in _foundUsers)
-            {
-                <tr>
-                    <td>@user.Id</td>
-                    <td>@user.Username</td>
-                    <td>@user.Email</td>
-                    <td>@user.Birthdate.ToString("d")</td>
-                    <td>@user.Gender.Name</td>
-                    <td>
-                        <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="()=>ShowDeleteConfirmation(user.Id)">
-                            <i class="oi oi-trash text-danger"></i>
-                        </button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
-
-@* 
-<div class="container-fluid">
-    <h3>Delete User</h3>
-    <div>
-        <label>Delete User by ID:</label>
-        <input type="number" class="form-control" @bind="deleteUserId" />
-    </div>
-</div>
-<div class="container-fluid text-center">
-    <button class="btn btn-danger mt-3" @onclick="() => ShowDeleteConfirmation(deleteUserId)">Delete</button>
-    <br />
-    <br />
-</div>
- *@
-
 
 
 @code {
@@ -222,5 +213,11 @@
             }
         }
     }
+
+    async Task EditUser(long id)
+    {
+        
+    }
+
 
 }
