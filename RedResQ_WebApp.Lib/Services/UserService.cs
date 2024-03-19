@@ -8,9 +8,9 @@ using RedResQ_WebApp.Lib.Models;
 
 namespace RedResQ_WebApp.Lib.Services
 {
-	public static class UserService
+	public class UserService
 	{
-		public async static Task<User[]> Fetch(long? id, int? amount)
+		public async Task<User[]> Fetch(long? id, int? amount)
 		{
 			HttpClient client = Consts.GetHttpClient();
             PathBuilder pathBuilder = new PathBuilder("user/fetch");
@@ -36,7 +36,7 @@ namespace RedResQ_WebApp.Lib.Services
 			return null!;
 		}
 
-        public async static Task<User[]?> Search(string username)
+        public async Task<User[]?> Search(string username)
         {
             HttpClient client = Consts.GetHttpClient();
             PathBuilder pathBuilder = new PathBuilder("user/search");
@@ -78,7 +78,7 @@ namespace RedResQ_WebApp.Lib.Services
         }
 
 
-        public async static Task Delete(long id)
+        public async Task Delete(long id)
 		{
 			HttpClient client = Consts.GetHttpClient();
             PathBuilder pathBuilder = new PathBuilder("user/delete");
@@ -96,10 +96,10 @@ namespace RedResQ_WebApp.Lib.Services
 
         }
 
-        public async static Task<User?> GetUserById(long id)
+        public async Task<User?> GetUserById(long id)
         {
             HttpClient client = Consts.GetHttpClient();
-            string requestUrl = $"user/get/{id}";
+            string requestUrl = $"user/get?id={id}";
 
             try
             {
@@ -122,14 +122,14 @@ namespace RedResQ_WebApp.Lib.Services
             return null;
         }
 
-        public async static Task<bool> UpdateUser(User user)
+        public async Task<bool> UpdateUser(User user)
         {
             HttpClient client = Consts.GetHttpClient();
-            string requestUrl = "user/update";
+            string requestUrl = $"user/update";
 
             try
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync(requestUrl, user);
+                HttpResponseMessage response = await client.PutAsJsonAsync(requestUrl, user);
 
                 if (response.IsSuccessStatusCode)
                 {

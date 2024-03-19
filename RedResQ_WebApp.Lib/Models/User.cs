@@ -32,25 +32,25 @@ namespace RedResQ_WebApp.Lib.Models
 
 		#region Properties
 
-		public long Id { get; private set; }
+		public long Id { get; set; }
 
-		public string Username { get; private set; }
+		public string Username { get; set; }
 
-		public string FirstName { get; private set; }
+		public string FirstName { get; set; }
 
-		public string LastName { get; private set; }
+		public string LastName { get; set; }
 
-		public string Email { get; private set; }
+		public string Email { get; set; }
 
-		public DateTime Birthdate { get; private set; }
+		public DateTime Birthdate { get; set; }
 
-		public Gender Gender { get; private set; }
+		public Gender Gender { get; set; }
 
-		public Language Language { get; private set; }
+		public Language Language { get; set; }
 
-		public Location Location { get; private set; }
+		public Location Location { get; set; }
 
-		public Role Role { get; private set; }
+		public Role Role { get; set; }
 
 		#endregion
 

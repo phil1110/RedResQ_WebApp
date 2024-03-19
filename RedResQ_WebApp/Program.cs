@@ -20,6 +20,7 @@ namespace RedResQ_WebApp
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
             builder.Services.AddScoped<UserAccountService>();
+            builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<ProtectedSessionStorage>();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             builder.Services.AddSingleton<UserAccountService>();
