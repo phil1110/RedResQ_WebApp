@@ -1,0 +1,56 @@
+﻿<MapHeadContent />
+
+<div @onmouseover="() => AddFunc()">
+    <Map @ref="mapRef" MapOptions="@mapOptions"></Map>
+</div>
+
+
+
+@code {
+    [Inject]
+    private IMarkerFactory? MarkerFactory { get; init; }
+
+    [Parameter]
+    public LatLng? Center { get; set; } = new LatLng(0, 0);
+
+
+
+    private bool _isSet = false;
+    private Map? mapRef;
+    private Marker? marker;
+    private MapOptions mapOptions = new MapOptions()
+    {
+        DivId = "mapId",
+        Center = new LatLng(    ),
+        Zoom = 5,
+        UrlTileLayer = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+	    SubOptions = new MapSubOptions()
+        {
+            Attribution = "&copy; <a lhref='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>",
+            TileSize = 256,
+            ZoomOffset = 0,
+            MaxZoom = 19,
+        }
+    };
+
+    private async void AddFunc()
+    {
+        if (!_isSet)
+        {
+            Func<MouseEvent, Task> task = new Func<MouseEvent, Task>(async (MouseEvent m) => await AddMarker(m));
+
+            await mapRef.OnClick(task);
+        }
+    }
+
+
+    private async Task AddMarker(MouseEvent m)
+    {
+        if(marker != null)
+        {
+            await marker.Remove();
+        }
+
+        marker = await MarkerFactory.CreateAndAddToMap(m.LatLng, mapRef);
+    }
+}

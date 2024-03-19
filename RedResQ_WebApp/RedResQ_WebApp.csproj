@@ -19,4 +19,8 @@
     <ProjectReference Include="..\RedResQ_WebApp.Lib\RedResQ_WebApp.Lib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\css\custom\map\map.css" />
+  </ItemGroup>
+
 </Project>
