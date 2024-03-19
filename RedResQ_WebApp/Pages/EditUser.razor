@@ -1,1 +1,77 @@
-﻿
+﻿@page "/user/edit/{UserId:long}"
+@inject UserService UserService
+@inject NavigationManager NavigationManager
+
+
+<PageTitle>Edit User</PageTitle>
+
+@if (_user != null)
+{
+    <EditForm Model="@_user" OnValidSubmit="Save">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <InputText id="username" class="form-control" @bind-Value="_user.Username" />
+        </div>
+        
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <InputText id="email" class="form-control" @bind-Value="_user.Email" />
+        </div>
+
+        <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <InputText id="firstName" class="form-control" @bind-Value="_user.FirstName" />
+        </div>
+
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <InputText id="lastName" class="form-control" @bind-Value="_user.LastName" />
+        </div>
+
+        <div class="mb-3">
+            <label for="birthdate" class="form-label">Birthdate</label>
+            <InputDate id="birthdate" class="form-control" @bind-Value="_user.Birthdate" />
+        </div>
+
+@*         <div class="mb-3">
+            <label for="gender" class="form-label">Gender</label>
+            <InputText id="gender" class="form-control" @bind-Value="_user.Gender" />
+        </div> *@
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+        <button class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+    </EditForm>
+}
+else
+{
+    <p>Loading user data...</p>
+}
+
+@code {
+    [Parameter]
+    public long UserId { get; set; }
+
+    private User? _user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _user = await UserService.GetUserById(UserId);
+    }
+
+    private async Task Save()
+    {
+        if (_user != null)
+        {
+            await UserService.UpdateUser(_user);
+            NavigationManager.NavigateTo("/users");
+        }
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/users");
+    }
+}
