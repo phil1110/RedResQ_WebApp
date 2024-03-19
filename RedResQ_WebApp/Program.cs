@@ -24,7 +24,7 @@ namespace RedResQ_WebApp
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             builder.Services.AddSingleton<UserAccountService>();
 
-            // Service for Map
+            // Maps service
             builder.Services.AddBlazorLeafletMaps();
 
             var app = builder.Build();

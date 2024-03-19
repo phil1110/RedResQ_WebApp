@@ -1,0 +1,57 @@
+﻿@page "/map"
+
+<HeadContent>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+		  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+		  crossorigin="" />
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+			integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+			crossorigin=""></script>
+</HeadContent>
+
+<h3>Map</h3>
+
+<Map @ref="mapRef" MapOptions="@mapOptions"></Map>
+
+<style>
+    #mapId {
+        height: 80vh;
+    }
+</style>
+
+@code {
+    [Inject]
+    private IMarkerFactory MarkerFactory { get; init; }
+
+    private Map mapRef;
+    private MapOptions mapOptions = new MapOptions()
+    {
+        DivId = "mapId",
+        Center = new LatLng(48.20564531302176, 16.36981746796741),
+        Zoom = 5,
+        UrlTileLayer = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+	    SubOptions = new MapSubOptions()
+        {
+            Attribution = "&copy; <a lhref='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>",
+            TileSize = 256,
+            ZoomOffset = 0,
+            MaxZoom = 19,
+        }
+    };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        mapRef = new Map()
+        {
+            MapOptions = mapOptions,
+        };
+
+        await mapRef.OnClick(async (MouseEvent mouseEvent) => await AddMarker(mouseEvent));
+    }
+
+
+    private async Task AddMarker(MouseEvent m)
+    {
+        await MarkerFactory.CreateAndAddToMap(m.LatLng, mapRef);
+    }
+}

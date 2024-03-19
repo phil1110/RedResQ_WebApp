@@ -48,9 +48,6 @@ namespace RedResQ_WebApp.Lib.Services
                 HttpResponseMessage response = await client.GetAsync(pathBuilder.ToString());
                 Console.WriteLine(response);
 
-                // API liefert anscheinend nicht einen User sondern meherere
-                // Ich muss aber einen User erhalten
-
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonResponse = await response.Content.ReadAsStringAsync();
@@ -97,6 +94,59 @@ namespace RedResQ_WebApp.Lib.Services
                 Console.WriteLine($"Error deleting user. Message: {ex.Message}");
             }
 
+        }
+
+        public async static Task<User?> GetUserById(long id)
+        {
+            HttpClient client = Consts.GetHttpClient();
+            string requestUrl = $"user/get/{id}";
+
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(requestUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    User? user = await response.Content.ReadFromJsonAsync<User>();
+                    return user;
+                }
+                else
+                {
+                    Console.WriteLine($"Error getting user by ID. Status code: {response.StatusCode}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error getting user by ID. Message: {ex.Message}");
+            }
+
+            return null;
+        }
+
+        public async static Task<bool> UpdateUser(User user)
+        {
+            HttpClient client = Consts.GetHttpClient();
+            string requestUrl = "user/update";
+
+            try
+            {
+                HttpResponseMessage response = await client.PostAsJsonAsync(requestUrl, user);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("User successfully updated.");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine($"Error updating user. Status code: {response.StatusCode}");
+                    return false;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error updating user. Message: {ex.Message}");
+                return false;
+            }
         }
     }
 }
