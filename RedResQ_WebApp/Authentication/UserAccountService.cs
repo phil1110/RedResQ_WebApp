@@ -9,7 +9,7 @@
             _users = new List<UserAccount>
             {
                 new UserAccount {UserName = "admin", Password = "admin", Role = "Administrator"},
-                new UserAccount {UserName = "user", Password = "user", Role = "user"}
+                new UserAccount {UserName = "user", Password = "user", Role = "user"},
             };
         }
 
