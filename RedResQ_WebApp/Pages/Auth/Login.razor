@@ -38,6 +38,9 @@
     private async Task Authenticate()
     {
         var userAccount = userAccountService.GetUserByName(model.UserName);
+
+        string guestToken = await AuthService.RequestGuestToken();
+        
         if (userAccount == null || userAccount.Password != model.Password)
         {
             await js.InvokeVoidAsync("alert", "Invalid User Name or Password");

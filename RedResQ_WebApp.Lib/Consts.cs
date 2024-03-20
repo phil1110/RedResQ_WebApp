@@ -9,9 +9,9 @@ namespace RedResQ_WebApp.Lib
 {
     public static class Consts
     {
-        public const string BASE_ADDRESS = "https://api.redresq.at";
+        private const string BASE_ADDRESS = "https://api.redresq.at";
 
-        public static string? AuthToken { get; private set; } = "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3ZlcnNpb24iOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9leHBpcmF0aW9uIjoiNjM4NDkwNDQxODk4MjY4NTk4IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IlBoaWxSZWNrIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoicGhpbGlwcHJlY2tuYWdlbEBvdXRsb29rLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IjYiLCJleHAiOjE3MTM0NDczODl9.X0KNkxkSB3d0n-II6Bq8SaYkyc3oLAqlNXUSmG7usgErtN_ahnsv4oD1yx3s2cZtyX_NJbF_zQgIZCB2Rr2Gyw";
+        public static string? AuthToken { get; set; }
 
         public static bool IsAuthorized { get; private set; }
 

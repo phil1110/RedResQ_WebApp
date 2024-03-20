@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageReference Include="ChartJs.Blazor.Fork" Version="2.0.2" />
     <PackageReference Include="FisSst.BlazorMaps" Version="1.0.1" />
   </ItemGroup>
@@ -21,6 +22,11 @@
 
   <ItemGroup>
     <None Include="wwwroot\css\custom\map\map.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Menus\Sidebar.razor" />
+    <_ContentIncludedByDefault Remove="Components\Menus\Topbar.razor" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,28 @@
+﻿@using RedResQ_WebApp.Authentication;
+@inherits LayoutComponentBase
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
+
+<PageTitle>RedResQ_WebApp</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <MainLayout />
+    </Authorized>
+    
+    <NotAuthorized>
+        <div class="flex w-100 vh-100 align-center p-auto">
+            <Login />
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (Consts.AuthToken == null && firstRender)
+        {
+            await AuthService.RequestGuestToken();
+        }
+    }
+}

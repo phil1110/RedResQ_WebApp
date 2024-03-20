@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 using RedResQ_WebApp.Authentication;
 using RedResQ_WebApp.Lib.Services;
 using RedResQ_WebApp.Pages;
+using Blazored.LocalStorage;
 
 namespace RedResQ_WebApp
 {
@@ -27,6 +28,9 @@ namespace RedResQ_WebApp
 
             // Maps service
             builder.Services.AddBlazorLeafletMaps();
+            
+            // Storage service
+            builder.Services.AddBlazoredLocalStorage();
 
             var app = builder.Build();
 
