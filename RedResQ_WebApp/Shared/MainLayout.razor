@@ -5,30 +5,30 @@
 
 <PageTitle>RedResQ_WebApp</PageTitle>
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main class="w-100">
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-            <AuthorizeView>
-                <Authorized>
+<AuthorizeView>
+    <Authorized>
+        <div class="page">
+            <NavMenu />
+        
+            <main class="w-100">
+                <div class="top-row px-4">
                     <a @onclick="Logout" href="javascript:void(0)">Logout</a>
-                </Authorized>
-                <NotAuthorized>
-                    <a href="/login">Login</a>
-                </NotAuthorized>
-            </AuthorizeView>
+                </div>
+        
+        
+                <div class="container-fluid w-100 pt-4 pb-4">
+                    @Body
+                </div>
+            </main>
         </div>
-
-
-        <div class="container-fluid w-100 pt-4 pb-4">
-            @Body
+    </Authorized>
+    
+    <NotAuthorized>
+        <div class="flex w-100 vh-100 align-center p-auto">
+            <Login />
         </div>
-    </main>
-</div>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code{
     private async Task Logout()

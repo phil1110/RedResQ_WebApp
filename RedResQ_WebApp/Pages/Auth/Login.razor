@@ -1,25 +1,26 @@
-﻿@page "/login"
-@using RedResQ_WebApp.Authentication;
+﻿@using RedResQ_WebApp.Authentication;
 @inject UserAccountService userAccountService
 @inject IJSRuntime js
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
 
-<div class="row">
-    <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
+<div id="authcontainer" class="h-100 py-0">
+    <div id="authbox" class="px-4 pb-2 pt-3 w-50 border border-2 rounded-3">
         <div class="mb-3 text-center">
-            <h3>LOGIN</h3>
+            <h3 class="fw-bolder">LOGIN</h3>
         </div>
         <div class="mb-3">
-            <label>User Name</label>
-            <input @bind="model.UserName" class="form-control" placeholder="User Name" />
+            <label class="fw-bold">Identifier</label>
+            <input @bind="model.UserName" class="form-control" placeholder="User name or email address" />
         </div>
         <div class="mb-3">
-            <label>Password</label>
-            <input @bind="model.Password" type="password" class="form-control" placeholder="Password" />
+            <label class="fw-bold">Password</label>
+            <input @bind="model.Password" type="password" class="form-control" placeholder="Enter your password" />
         </div>
         <div class="mb-3 d-grid gap-2">
-            <button @onclick="Authenticate" class="btn btn-primary">Login</button>
+            <button @onclick="Authenticate" class="btn btn-primary">
+                <span class="fw-bold">Login</span>
+            </button>
         </div>
     </div>
 </div>
