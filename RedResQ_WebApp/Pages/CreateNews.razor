@@ -1,6 +1,7 @@
 ﻿@page "/createNews"
 @attribute [Authorize(Roles = "Administrator")]
 @using RedResQ_WebApp.Lib.Services
+@inject NavigationManager NavigationManager
 
 <div class="container mt-4">
     <h3>Publish News</h3>
@@ -9,73 +10,88 @@
         <label for="title">Title:</label>
         <input class="form-control" id="title" @bind="title" />
         <br />
-
     </div>
 
     <div class="form-group">
         <label for="content">Content:</label>
         <textarea class="form-control" id="content" @bind="content"></textarea>
         <br />
-
     </div>
 
     <div class="form-group">
         <label for="author">Author:</label>
         <input class="form-control" id="author" @bind="author" />
         <br />
-
     </div>
-
-    
-    @* <div class="form-group">
-        <label for="date">Date:</label>
-        <input class="form-control" type="datetime-local" id="date" @bind="date" />
-        <br />
-
-    </div> *@
 
     <div class="form-group">
         <label for="language">Language:</label>
-        <input class="form-control" type="number" id="language" @bind="language" />
+        <select class="form-control w-50" id="language" @bind="@_languageId">
+            <option value="-1">None</option>
+            @foreach (Language? language in _languages)
+            {
+                <option value="@language.Id">@language.Name</option>
+            }
+        </select>
         <br />
-
     </div>
 
     <div class="form-group">
         <label for="image">Image:</label>
         <input class="form-control" type="number" id="image" @bind="image" />
         <br />
-
     </div>
 
     <div class="form-group">
         <label for="location">Location:</label>
-        <input class="form-control" type="number" id="location" @bind="location" />
-            <br />
+        <select class="form-control w-50" id="location" @bind="@_countryId">
+            <option value="-1">None</option>
+            @foreach (Country? country in _countries)
+            {
+                <option value="@country.Id">@country.CountryName</option>
+            }
+        </select>
         <br />
-
     </div>
 
     <button class="btn btn-primary" @onclick="CreateNewNews">Publish</button>
+    <button class="btn btn-secondary ms-2" @onclick="Cancel">Cancel</button>
+
 </div>
 
 @code {
     private string title;
     private string content;
     private string author;
-    // Soll Date überhaupt angegeben werden? 
-    // Oder soll das der tag der Veröffentlichung sein
-    // private DateTime date;
-    private int language;
-    private int image;
-    private int location;
+    long? _countryId = null;
+    long? _languageId = null;
+    private long image;
+
+    private List<Country> _countries;
+    private List<Language> _languages;
+
+    public CreateNews()
+    {
+        _countries = new List<Country>();
+        _languages = new List<Language>();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _countries.AddRange(await CountryService.Fetch());
+        _languages.AddRange(await LanguageService.Fetch());
+    }
 
     private async Task CreateNewNews()
     {
-        Console.WriteLine("CreateNewNews method called"); 
-
+        Console.WriteLine("CreateNewNews method called");
         DateTime currentDate = DateTime.Now;
+        await NewsService.CreateNews(title, content, author, currentDate, _languageId, image, _countryId);
+        NavigationManager.NavigateTo("/news");
+    }
 
-        await NewsService.CreateNews(title, content, author, /*date*/ currentDate, language, image, location);
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/news");
     }
 }
