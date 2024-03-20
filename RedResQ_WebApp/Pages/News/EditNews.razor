@@ -1,0 +1,75 @@
+﻿@page "/article/edit/{ArticleId:long}"
+@inject NavigationManager NavManager
+
+<PageTitle>Edit Article</PageTitle>
+
+@if (_article != null)
+{
+    <EditForm Model="@_article" OnValidSubmit="Save">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <InputText id="title" class="form-control" @bind-Value="_article.Title" />
+        </div>
+
+        <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <InputTextArea id="content" class="form-control" @bind-Value="_article.Content" />
+        </div>
+
+        <div class="mb-3">
+            <label for="author" class="form-label">Author</label>
+            <InputText id="author" class="form-control" @bind-Value="_article.Author" />
+        </div>
+
+        <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <InputDate id="date" class="form-control" @bind-Value="_article.Date" />
+        </div>
+
+        <div class="mb-3">
+            <label for="language" class="form-label">Language</label>
+            <InputText id="language" class="form-control" @bind-Value="_article.Language.Name" />
+        </div>
+
+        <div class="mb-3">
+            <label for="country" class="form-label">Country</label>
+            <InputText id="country" class="form-control" @bind-Value="_article.Country.CountryName" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+        <button class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+    </EditForm>
+}
+else
+{
+    <p>Loading article data...</p>
+}
+
+@code {
+    [Parameter]
+    public long ArticleId { get; set; }
+
+    private Article? _article;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _article = await NewsService.GetArticleById(ArticleId);
+    }
+
+    private async Task Save()
+    {
+        if (_article != null)
+        {
+            await NewsService.Update(_article);
+            NavManager.NavigateTo("/news");
+        }
+    }
+
+    private void Cancel()
+    {
+        NavManager.NavigateTo("/news");
+    }
+}

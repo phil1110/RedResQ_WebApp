@@ -1,86 +1,139 @@
-﻿@page "/news/fetch"
+﻿@page "/news"
+@inject NavigationManager NavManager
+@inject IJSRuntime JSRuntime
 
-<h3>Filter options</h3>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
-<table class="table table-striped mt-3">
-    <thead>
-        <tr>
-            <th>Country ID</th>
-            <th>Language ID</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><InputSelect class="w-50" TValue="long?" @bind-Value="@_countryId">
-
-                    <option value="@(-1)">None</option>
-
-                    @foreach (Country? country in _countries)
-                    {
-                        <option value="@country.Id">@country.CountryName</option>
-                    }
-                </InputSelect>
-            </td>
-            <td>
-                <InputSelect class="w-50" TValue="long?" @bind-Value="@_languageId">
-
-                    <option value ="@(-1)">None</option>
-
-                    @foreach (Language? language in _languages)
-                    {
-                        <option value="@language.Id">@language.Name</option>
-                    }
-                </InputSelect>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="container-fluid">
 
 
-<h3>Fetch</h3>
+    <h2>News Overview</h2>
+    <br />
 
-@if (_articles.Count > 0)
-{
+    <div class="mb-2">
+        <button class="btn btn-primary" @onclick="NavigateToCreateNews">
+            <i class="fas fa-plus"></i> Add News
+        </button>
+    </div>
+
+    <h5>Filter Options</h5>
     <table class="table table-striped mt-3">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Content</th>
-                <th>Author</th>
-                <th>Date</th>
-                <th>Language</th>
-                <th>Image description</th>
-                <th>Country</th>
-                <th>Action</th>
+                <th>Country ID</th>
+                <th>Language ID</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (Article article in _articles)
-            {
-                <tr>
-                    <td>@article.Id</td>
-                    <td>@article.Title</td>
-                    <td>@(article.Content.Length > 15 ? article.Content.Substring(0, 15) + "..." : article.Content)</td>
-                    <td>@article.Author</td>
-                    <td>@article.Date.ToString("d")</td>
-                    <td>@article.Language.Name</td>
-                    <td>@article.Image?.Description</td>
-                    <td>@article.Country.CountryName</td>
-                    <td></td>
-                </tr>
-            }
+            <tr>
+                <td>
+                    <InputSelect class="w-50" TValue="long?" @bind-Value="@_countryId">
+
+                        <option value="@(-1)">None</option>
+
+                        @foreach (Country? country in _countries)
+                        {
+                            <option value="@country.Id">@country.CountryName</option>
+                        }
+                    </InputSelect>
+                </td>
+                <td>
+                    <InputSelect class="w-50" TValue="long?" @bind-Value="@_languageId">
+
+                        <option value="@(-1)">None</option>
+
+                        @foreach (Language? language in _languages)
+                        {
+                            <option value="@language.Id">@language.Name</option>
+                        }
+                    </InputSelect>
+                </td>
+            </tr>
         </tbody>
     </table>
-    if (_showButton)
-    {
-        <div class="w-100 text-center">
-            <button class="btn btn-primary w-50" @onclick="() => FetchArticles()">
-                <span>Load more Articles</span>
-            </button>
+    @* <div class="selection-area mt-3">
+        <div class="country-selection mb-3">
+            <label for="countrySelection" class="form-label">Country</label>
+            <InputSelect id="countrySelection" class="custom-select w-50" TValue="long?" @bind-Value="@_countryId">
+                <option value="-1">None</option>
+                @foreach (Country? country in _countries)
+                {
+                    <option value="@country.Id">@country.CountryName</option>
+                }
+            </InputSelect>
         </div>
+
+        <div class="language-selection">
+            <label for="languageSelection" class="form-label">Language</label>
+            <InputSelect id="languageSelection" class="custom-select w-50" TValue="long?" @bind-Value="@_languageId">
+                <option value="-1">None</option>
+                @foreach (Language? language in _languages)
+                {
+                    <option value="@language.Id">@language.Name</option>
+                }
+            </InputSelect>
+        </div>
+    </div> *@
+
+</div>
+
+
+
+
+<div class="container-fluid">
+
+    @if (_articles.Count > 0)
+    {
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Author</th>
+                    <th>Date</th>
+                    <th>Language</th>
+                    <th>Image description</th>
+                    <th>Country</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Article article in _articles)
+                {
+                    <tr>
+                        <td>@article.Id</td>
+                        <td>@article.Title</td>
+                        <td>@(article.Content.Length > 15 ? article.Content.Substring(0, 15) + "..." : article.Content)</td>
+                        <td>@article.Author</td>
+                        <td>@article.Date.ToString("d")</td>
+                        <td>@article.Language.Name</td>
+                        <td>@article.Image?.Description</td>
+                        <td>@article.Country.CountryName</td>
+                        <td>
+                            <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="() => EditArticle(article.Id)">
+                                <i class="fa fa-pencil-alt"></i>
+                            </button>
+                            <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="() => ShowDeleteConfirmation(article.Id)">
+                                <i class="oi oi-trash text-danger"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        if (_showButton)
+        {
+            <div class="w-100 text-center">
+                <button class="btn btn-primary w-50" @onclick="() => FetchArticles()">
+                    <span>Load more Articles</span>
+                </button>
+            </div>
+        }
     }
-}
+</div>
+
+
 
 @code {
     private List<Article> _articles;
@@ -91,6 +144,7 @@
     long? _articleId = null;
     long? _countryId = null;
     long? _languageId = null;
+    long? deleteArticleId = null;
 
     bool _showButton = true;
 
@@ -123,5 +177,43 @@
         {
             _showButton = false;
         }
+    }
+
+    private async Task EditArticle(long articleId)
+    {
+        NavManager.NavigateTo($"/article/edit/{articleId}");
+    }
+
+    private async Task ShowDeleteConfirmation(long articleId)
+    {
+        var confirmed = await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete this article?");
+        if (confirmed)
+        {
+            deleteArticleId = articleId;
+            await DeleteArticle();
+        }
+    }
+
+    private async Task DeleteArticle()
+    {
+        if (deleteArticleId.HasValue)
+        {
+            try
+            {
+                await NewsService.Delete(deleteArticleId.Value);
+                _articles.RemoveAll(article => article.Id == deleteArticleId);
+                deleteArticleId = null;
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error deleting article: {ex.Message}");
+            }
+        }
+    }
+
+    private void NavigateToCreateNews()
+    {
+        NavManager.NavigateTo("/createNews");
     }
 }
