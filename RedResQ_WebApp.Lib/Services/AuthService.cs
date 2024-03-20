@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 
 namespace RedResQ_WebApp.Lib.Services
@@ -17,10 +18,11 @@ namespace RedResQ_WebApp.Lib.Services
             
             if (response.IsSuccessStatusCode)
             {
-                var token = await response.Content.ReadAsStringAsync();
+                var token = await response.Content.ReadFromJsonAsync<string>();
+
                 Consts.AuthToken = token;
 
-                return token;
+                return token!;
             }
 
             return null!;
@@ -35,10 +37,11 @@ namespace RedResQ_WebApp.Lib.Services
 
             if (response.IsSuccessStatusCode)
             {
-                var token = await response.Content.ReadAsStringAsync();
+                var token = await response.Content.ReadFromJsonAsync<string>();
+
                 Consts.AuthToken = token;
 
-                return token;
+                return token!;
             }
 
             return null!;

@@ -1,8 +1,7 @@
 ﻿@using RedResQ_WebApp.Authentication;
-@inject UserAccountService userAccountService
-@inject IJSRuntime js
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
+@inject IJSRuntime js
 
 <div id="authcontainer" class="h-100 py-0">
     <div id="authbox" class="px-4 pb-2 pt-3 w-50 border border-2 rounded-3">
@@ -11,11 +10,11 @@
         </div>
         <div class="mb-3">
             <label class="fw-bold">Identifier</label>
-            <input @bind="model.UserName" class="form-control" placeholder="User name or email address" />
+            <input @bind="Identifier" class="form-control" placeholder="User name or email address" />
         </div>
         <div class="mb-3">
             <label class="fw-bold">Password</label>
-            <input @bind="model.Password" type="password" class="form-control" placeholder="Enter your password" />
+            <input @bind="Secret" type="password" class="form-control" placeholder="Enter your password" />
         </div>
         <div class="mb-3 d-grid gap-2">
             <button @onclick="Authenticate" class="btn btn-primary">
@@ -26,35 +25,30 @@
 </div>
 
 @code {
-    private class Model
+    private string? Identifier { get; set; }
+    private string? Secret { get; set; }
+
+    private async void Authenticate()
     {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-
-    }
-
-    private Model model = new Model();
-
-    private async Task Authenticate()
-    {
-        var userAccount = userAccountService.GetUserByName(model.UserName);
-
-        string guestToken = await AuthService.RequestGuestToken();
-        
-        if (userAccount == null || userAccount.Password != model.Password)
+        try
         {
-            await js.InvokeVoidAsync("alert", "Invalid User Name or Password");
-            return;
-        }
+            var token = await AuthService.Login(Identifier!, Secret!);
 
-        var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
-
-        await customAuthStateProvider.UpdateAuthenticationState(new UserSession
+            if (token == null)
             {
-                UserName = userAccount.UserName,
-                Role = userAccount.Role
-            });
+                await js.InvokeVoidAsync("alert", "Invalid User Name or Password");
+                return;
+            }
 
-        navManager.NavigateTo("/", true);
+            var customAuthStateProvider = (AuthStateProvider)authStateProvider;
+
+            await customAuthStateProvider.UpdateAuthenticationState(TokenService.GetClaims(token));
+
+            navManager.NavigateTo("/", true);
+        }
+        catch (Exception ex)
+        {
+            await js.InvokeVoidAsync("alert", ex.Message);
+        }
     }
 }

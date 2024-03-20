@@ -5,14 +5,20 @@
 <div id="topbar-cont">
     <div id="topbar" class="top-row px-4">
         <a @onclick="Logout" href="javascript:void(0)">Logout</a>
+        <a @onclick="Test" href="javascript:void(0)">Tokentest</a>
     </div>
 </div>
 
 @code {
     private async Task Logout()
     {
-        var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+        var customAuthStateProvider = (AuthStateProvider)authStateProvider;
         await customAuthStateProvider.UpdateAuthenticationState(null!);
         navManager.NavigateTo("/", true);
+    }
+
+    private void Test()
+    {
+        TokenService.GetClaims(Consts.AuthToken!);
     }
 }
