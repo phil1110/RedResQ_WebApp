@@ -1,0 +1,45 @@
+﻿<div id="sidebar-cont">
+    <div id="sidebar">
+        <div id="rootlink-cont">
+            <a id="rootlink" class="nav-link nav-rootlink" href="/">@TopMsg</a>
+        </div>
+
+        <div class="nav-scrollable">
+            <nav class="flex-column">
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> Home
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="news">
+                        <span class="oi oi-book" aria-hidden="true"></span> News Management
+                    </NavLink>
+                </div>
+
+                <div class="nav-item nav px-3">
+                    <NavLink class="nav-link" href="createNews">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Publish News
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="stats">
+                        <span class="oi oi-bar-chart" aria-hidden="true"></span> Statistics
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="users">
+                        <span class="oi oi-person" aria-hidden="true"></span> Users
+                    </NavLink>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public string TopMsg { get; set; } = "RedResQ_WebApp";
+}

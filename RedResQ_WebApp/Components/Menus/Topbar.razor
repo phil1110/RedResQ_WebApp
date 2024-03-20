@@ -1,0 +1,18 @@
+﻿@using RedResQ_WebApp.Authentication;
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
+
+<div id="topbar-cont">
+    <div id="topbar" class="top-row px-4">
+        <a @onclick="Logout" href="javascript:void(0)">Logout</a>
+    </div>
+</div>
+
+@code {
+    private async Task Logout()
+    {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(null!);
+        navManager.NavigateTo("/", true);
+    }
+}

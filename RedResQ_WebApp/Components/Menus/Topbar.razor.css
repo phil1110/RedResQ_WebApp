@@ -1,0 +1,13 @@
+﻿#topbar-cont {
+    width: 100% !important;
+    height: 10% !important;
+    padding: 1vh 0;
+    position: sticky;
+}
+
+#topbar {
+    min-height: 50px !important;
+    height: 100%;
+    border: solid 2px black;
+    border-radius: 15px;
+}

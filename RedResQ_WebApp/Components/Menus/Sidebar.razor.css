@@ -1,0 +1,36 @@
+﻿#sidebar-cont {
+    position: sticky;
+    display: block;
+    height: 100%;
+    width: 100%;
+    padding: 1vh 1vw;
+}
+
+#sidebar {
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    border-radius: 15px;
+}
+
+.nav-item {
+    font-size: 1.1em;
+    color: red;
+}
+
+#rootlink-cont {
+    text-align: center;
+    font-size: 1.5em;
+}
+
+#rootlink{
+    transition: color 05.5s;
+}
+
+#rootlink:hover{
+    color: darkred;
+}
+
+.nav-rootlink {
+    color: black;
+}

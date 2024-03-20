@@ -1,30 +1,22 @@
-@using RedResQ_WebApp.Authentication;
-@inherits LayoutComponentBase
-@inject AuthenticationStateProvider authStateProvider
-@inject NavigationManager navManager
-
 <div class="page">
-    <main class="w-100">
-        <div id="sidebar">
-            
+    <main>
+        <div id="sidebar-element">
+            <Sidebar></Sidebar>
         </div>
         
-        <div class="top-row px-4">
-            <a @onclick="Logout" href="javascript:void(0)">Logout</a>
-        </div>
+        ´<div class="vstack">
+            <div id="topbar-element">
+                <Topbar></Topbar>
+            </div>
 
-
-        <div class="container-fluid w-100 pt-4 pb-4">
-            @Body
+            <div id="contentHolder">
+                @ChildContent
+            </div>
         </div>
     </main>
 </div>
 
 @code {
-    private async Task Logout()
-    {
-        var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
-        await customAuthStateProvider.UpdateAuthenticationState(null);
-        navManager.NavigateTo("/", true);
-    }
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
 }
