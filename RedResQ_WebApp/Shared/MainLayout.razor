@@ -1,22 +1,40 @@
-<div class="page">
-    <main>
-        <div id="sidebar-element">
-            <Sidebar></Sidebar>
-        </div>
-        
-        ´<div class="vstack">
-            <div id="topbar-element">
-                <Topbar></Topbar>
-            </div>
+<PageTitle>RedResQ_WebApp</PageTitle>
+@using RedResQ_WebApp.Authentication;
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
 
-            <div id="contentHolder">
-                @ChildContent
-            </div>
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+@*             <a @onclick="Test" href="javascript:void(0)">Tokentest</a>
+ *@            <a @onclick="Logout" href="javascript:void(0)">Logout</a>
+        </div>
+
+        <div class="container-fluid h-100 w-100 pt-4 pb-4">
+            @ChildContent
         </div>
     </main>
 </div>
 
+
 @code {
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
+
+    private async Task Logout()
+    {
+        var customAuthStateProvider = (AuthStateProvider)authStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(null!);
+        navManager.NavigateTo("/", true);
+    }
+
+    private void Test()
+    {
+        TokenService.GetClaims(Consts.AuthToken!);
+    }
 }

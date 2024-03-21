@@ -5,32 +5,46 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <div class="container-fluid">
-
-
     <h2>News Overview</h2>
     <br />
-
     <div class="mb-2">
         <button class="btn btn-primary" @onclick="NavigateToCreateNews">
             <i class="fas fa-plus"></i> Add News
         </button>
     </div>
 
-    <h5>Filter Options</h5>
-    <table class="table table-striped mt-3">
+    <table class="table white-table">
         <thead>
             <tr>
-                <th>Country ID</th>
-                <th>Language ID</th>
+                <th>Filter by:</th>
+                <th>
+                    Country: 
+                    <InputSelect class="w-50" TValue="long?" @bind-Value="@_countryId">
+                        <option value="@(-1)">None</option>
+                        @foreach (Country? country in _countries)
+                        {
+                            <option value="@country.Id">@country.CountryName</option>
+                        }
+                    </InputSelect>
+                </th>
+                <th>
+                    Language: 
+                    <InputSelect class="w-50" TValue="long?" @bind-Value="@_languageId">
+                        <option value="@(-1)">None</option>
+                        @foreach (Language? language in _languages)
+                        {
+                            <option value="@language.Id">@language.Name</option>
+                        }
+                    </InputSelect>
+                </th>
             </tr>
         </thead>
-        <tbody>
+       @*  <tbody>
             <tr>
+                <td></td>
                 <td>
                     <InputSelect class="w-50" TValue="long?" @bind-Value="@_countryId">
-
                         <option value="@(-1)">None</option>
-
                         @foreach (Country? country in _countries)
                         {
                             <option value="@country.Id">@country.CountryName</option>
@@ -39,9 +53,7 @@
                 </td>
                 <td>
                     <InputSelect class="w-50" TValue="long?" @bind-Value="@_languageId">
-
                         <option value="@(-1)">None</option>
-
                         @foreach (Language? language in _languages)
                         {
                             <option value="@language.Id">@language.Name</option>
@@ -49,33 +61,22 @@
                     </InputSelect>
                 </td>
             </tr>
-        </tbody>
+        </tbody> *@
     </table>
-    @* <div class="selection-area mt-3">
-        <div class="country-selection mb-3">
-            <label for="countrySelection" class="form-label">Country</label>
-            <InputSelect id="countrySelection" class="custom-select w-50" TValue="long?" @bind-Value="@_countryId">
-                <option value="-1">None</option>
-                @foreach (Country? country in _countries)
-                {
-                    <option value="@country.Id">@country.CountryName</option>
-                }
-            </InputSelect>
-        </div>
-
-        <div class="language-selection">
-            <label for="languageSelection" class="form-label">Language</label>
-            <InputSelect id="languageSelection" class="custom-select w-50" TValue="long?" @bind-Value="@_languageId">
-                <option value="-1">None</option>
-                @foreach (Language? language in _languages)
-                {
-                    <option value="@language.Id">@language.Name</option>
-                }
-            </InputSelect>
-        </div>
-    </div> *@
-
 </div>
+
+<style>
+     .white-table {
+        background-color: white !important; 
+        border-collapse: collapse;  
+        border: none;  
+    }
+
+         .white-table th,
+        .white-table td {
+            border: none !important;
+        }
+</style>
 
 
 
