@@ -1,0 +1,53 @@
+﻿@page "/quiz/test"
+
+<h3>Quiz-Overview</h3>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Birthdate</th>
+            <th>Gender</th>
+            <th>Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Quiz quiz in Quizzes)
+        {
+            <tr>
+                <td>@quiz.Id</td>
+                <td>@quiz.Name</td>
+                <td>@quiz.MaxScore</td>
+                <td>@quiz</td>
+                <td>
+                    <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="()=>ShowDeleteConfirmation(user.Id)">
+                        <i class="oi oi-trash text-danger"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private long? Id { get; set; }
+
+    private int? Amount { get; set; }
+
+    private string? Query { get; set; }
+
+    private long? QuizTypeId { get; set; }
+
+    private QuizType[]? QuizTypes { get; set; }
+
+    private Quiz[]? Quizzes { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Quizzes = await QuizService.Fetch();
+    }
+}
