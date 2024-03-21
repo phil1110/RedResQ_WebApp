@@ -1,6 +1,6 @@
 ﻿@page "/quiz/test"
 
-<h3>Quiz-Overview</h3>
+<h3>Quiz-Menu</h3>
 
 <div id="searchbox">
     <div id="form-cont">
@@ -56,10 +56,13 @@
     </div>
 </div>
 
-<br />
 
 @if (Quizzes != null)
 {
+    <br />
+
+    <h3>Search result</h3>
+
     <table class="table table-striped mt-3">
         <thead>
             <tr>
@@ -112,11 +115,17 @@
 
     private async Task Search()
     {
+        long? tempId = Id;
+
         if (firstSearch)
         {
             firstSearch = false;
         }
+        if (tempId.HasValue)
+        {
+            tempId--;
+        }
 
-        Quizzes = await QuizService.Fetch(Id, Amount, Query, QuizTypeId);
+        Quizzes = await QuizService.Fetch(tempId, Amount, Query, QuizTypeId);
     }
 }
