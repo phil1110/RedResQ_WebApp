@@ -1,0 +1,60 @@
+﻿#searchbox {
+    display: flex;
+}
+
+#form-cont {
+    display: block;
+    width: 50%
+}
+
+.form-group label {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 30% !important;
+    height: 100%;
+
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+#element-cont {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.input-element {
+    display: inline-flex;
+    float: right;
+    width: 70% !important;
+}
+
+.element-set {
+    display: block;
+    width: 100%;
+}
+
+@media (height >= 600px) {
+    .element-set {
+        margin-top: 1.5vh;
+    }
+}
+
+@media (height < 600px) {
+    .element-set {
+        margin-top: 10px;
+    }
+}
+
+.element-set:first-of-type {
+    margin-top: 0 !important;
+}
+
+#searchctrl-cont {
+    width: 50%;
+    display: block;
+    padding: 2vh 2vw;
+    text-align: center;
+}
