@@ -1,5 +1,5 @@
 #authcontainer {
-    background-color: rgba(255,47,47,0.83) !important;
+    background: linear-gradient(to bottom, #A8271C,#A8271C 30%,#100707);
     display: flex;
     align-content: center;
     flex-direction: column;
@@ -10,6 +10,17 @@
 
 #authbox {
     display: block;
-    background-color: rgba(235,235,235,0.96);
+    background-color: #f0f0f0;
     border-color: gray;
+    border-radius: 25px;
 }
+
+.custom-rounded-input {
+    border-radius: 2rem; 
+}
+
+.custom-red {
+    background: #A8271C;
+    border-color: #A8271C;
+}
+

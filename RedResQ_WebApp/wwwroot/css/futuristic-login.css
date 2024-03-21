@@ -1,1 +1,36 @@
-﻿
+﻿body {
+    background: linear-gradient(145deg, #FF5F6D, #A8271C);
+}
+
+#authbox {
+    background-color: #fff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+    #authbox:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+.btn-primary {
+    background: linear-gradient(145deg, #D72E1B, #A8271C);
+    border: none;
+}
+
+    .btn-primary:hover {
+        background: linear-gradient(145deg, #FF4136, #C71F16);
+    }
+
+.form-control {
+    border: 1px solid #A8271C;
+}
+
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(168, 39, 28, 0.25);
+    }
+
+.label, .fw-bold {
+    color: #A8271C;
+}
