@@ -2,6 +2,8 @@
 @inject NavigationManager NavManager
 @inject IJSRuntime JSRuntime
 
+<PageTitle>News</PageTitle>
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <div class="container-fluid">
@@ -39,29 +41,6 @@
                 </th>
             </tr>
         </thead>
-       @*  <tbody>
-            <tr>
-                <td></td>
-                <td>
-                    <InputSelect class="w-50" TValue="long?" @bind-Value="@_countryId">
-                        <option value="@(-1)">None</option>
-                        @foreach (Country? country in _countries)
-                        {
-                            <option value="@country.Id">@country.CountryName</option>
-                        }
-                    </InputSelect>
-                </td>
-                <td>
-                    <InputSelect class="w-50" TValue="long?" @bind-Value="@_languageId">
-                        <option value="@(-1)">None</option>
-                        @foreach (Language? language in _languages)
-                        {
-                            <option value="@language.Id">@language.Name</option>
-                        }
-                    </InputSelect>
-                </td>
-            </tr>
-        </tbody> *@
     </table>
 </div>
 

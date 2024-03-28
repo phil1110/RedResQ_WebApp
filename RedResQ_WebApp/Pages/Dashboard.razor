@@ -1,57 +1,88 @@
 ﻿@page "/"
 @inject IJSRuntime js
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Dashboard</PageTitle>
+
+<div class="container-fluid">
+    <AuthorizeView>
+        <Authorized>
+            <h1>Dashboard</h1>
+
+            <br />
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 border border-primary">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Installed Apps</h5>
+                            <p class="card-text display-4">123</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 border border-secondary">
+                        <div class="card-body">
+                            <h5 class="card-title text-secondary">Amount of users</h5>
+                            <p class="card-text display-4">456</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 border border-success">
+                        <div class="card-body">
+                            <h5 class="card-title text-success">Amount of Admins</h5>
+                            <p class="card-text display-4">12</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 border border-danger">
+                        <div class="card-body">
+                            <h5 class="card-title text-danger">App review</h5>
+                            <p class="card-text display-4">4.9/5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border border-dark">
+                        <div class="card-body">
+                            <h5 class="card-title text-dark">Statistik 1</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eget felis ut purus mollis aliquam.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border border-dark">
+                        <div class="card-body">
+                            <h5 class="card-title text-dark">Statistik 2</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eget felis ut purus mollis aliquam.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+</div>
 
 
-<AuthorizeView>
-	<Authorized>
-		<h1>Hello, @context.User.Identity.Name!</h1>
 
-	</Authorized>
-	<NotAuthorized>
-		<h1>Welcome to RedResQ's WebApp</h1>
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
 
-	</NotAuthorized>
-</AuthorizeView>
+    protected override Task OnInitializedAsync()
+    {
+        Console.WriteLine("Test");
+        return base.OnInitializedAsync();
+    }
 
-<AuthorizeView>
-	<Authorized>
-		<h3>Du hast nun Zugrif auf die WebApp</h3>
+    private async Task DisplayGreetingAlert()
+    {
+        var authState = await authenticationState;
+        var message = $"Hello {authState.User.Identity.Name}";
 
-	</Authorized>
-	<NotAuthorized>
-		<h3>Log in to be able to use the functionalities of our WebApp</h3>
-	</NotAuthorized>
-</AuthorizeView>
-
-
-
-<SurveyPrompt Title="How is Blazor working for you?" />
-
-
-<AuthorizeView>
-	<Authorized>
-		<br /><br />
-		<button class="btn btn-outline-primary" @onclick="DisplayGreetingAlert">Display Greeting Alert</button>
-	</Authorized>
-</AuthorizeView>
-
-@code{
-	[CascadingParameter]
-	private Task<AuthenticationState> authenticationState { get; set; }
-
-	protected override Task OnInitializedAsync()
-	{
-		Console.WriteLine("Test");
-		return base.OnInitializedAsync();
-	}
-
-	private async Task DisplayGreetingAlert()
-	{
-		var authState = await authenticationState;
-		var message = $"Hello {authState.User.Identity.Name}";
-
-		await js.InvokeVoidAsync("alert", message);
-	}
+        await js.InvokeVoidAsync("alert", message);
+    }
 }
