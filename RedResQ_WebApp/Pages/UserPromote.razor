@@ -1,0 +1,73 @@
+﻿@page "/user/promote/{UserId:long}"
+@inject UserService UserService
+@inject NavigationManager NavigationManager
+@using RedResQ_WebApp.Lib.Services
+@using RedResQ_WebApp.Lib.Models
+
+<PageTitle>Promote User</PageTitle>
+
+
+@if (_roles != null && _user != null)
+{
+    <div>
+        <h3>Select a new role for @_user.Username</h3>
+
+        <select @bind="_selectedRoleId" class="form-control">
+            @foreach (var role in _roles)
+            {
+                <option value="@role.Id">@role.Name</option>
+            }
+        </select>
+        <br />
+        <button class="btn btn-primary" @onclick="PromoteUser">Promote</button>
+    </div>
+}
+else
+{
+    <p>Loading user data...</p>
+}
+
+@code {
+    [Parameter]
+    public long UserId { get; set; }
+
+    private User? _user;
+    private List<Role> _roles;
+    private long _selectedRoleId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _user = await UserService.GetUserById(UserId);
+        Console.WriteLine($"Benutzer geladen: {_user?.Username}");
+
+        _roles = await UserService.GetRoles() ?? new List<Role>();
+        Console.WriteLine($"Anzahl der geladenen Rollen: {_roles.Count}");
+
+        if (_roles.Any() && _user != null)
+        {
+            _selectedRoleId = _user.Role.Id;
+        }
+    }
+
+
+    private async Task PromoteUser()
+    {
+        if (_user != null && _selectedRoleId != 0)
+        {
+            bool success = await UserService.PromoteUser(_user.Id, _selectedRoleId);
+            if (success)
+            {
+                NavigationManager.NavigateTo("/users");
+            }
+            else
+            {
+                Console.WriteLine("Failed to promote user.");
+            }
+        }
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/users");
+    }
+}

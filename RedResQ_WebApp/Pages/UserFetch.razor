@@ -9,14 +9,21 @@
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
 
 <div class="container-fluid">
-    <h3>User Overview</h3>
+    <h3>User Overview</h3>   
     <br />
+
     <div class="d-flex align-items-center">
         <input type="text" class="form-control me-2" placeholder="Username" @bind="searchUsername" />
         <button class="btn btn-primary" @onclick="SearchUser">Search</button>
     </div>
+
+
 </div>
 
 
@@ -71,7 +78,8 @@
                     <th>Email</th>
                     <th>Birthdate</th>
                     <th>Gender</th>
-                    <th>Action</th>
+                    <th>Role</th>
+                    <th>Actions</th>
 
                 </tr>
             </thead>
@@ -84,18 +92,62 @@
                         <td>@user.Email</td>
                         <td>@user.Birthdate.ToString("d")</td>
                         <td>@user.Gender.Name</td>
+                        <td>@user.Role.Name</td>
                         <td>
-                            <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="()=>EditUser(user.Id)">
-                                <i class="fa fa-pencil-alt"></i>
-                            </button>
-                            <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="()=>ShowDeleteConfirmation(user.Id)">
-                                <i class="oi oi-trash text-danger"></i>
-                            </button>
+                            <Tooltip Class="d-inline-block" Title="Edit User"role="button">
+                                <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="()=>EditUser(user.Id)">
+                                  <i class="fa fa-pencil-alt"></i>
+                                </button>
+                            </Tooltip>
+                            <Tooltip Class="d-inline-block" Title="Edit Role"role="button">
+                                <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="()=>PromoteRole(user.Id)">
+                                    <i class="fas fa-arrow-up"></i>
+                                </button>
+                            </Tooltip>
+                            <Tooltip Class="d-inline-block" Title="Delete User"role="button">
+                                <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="()=>ShowDeleteConfirmation(user.Id)">
+                                    <i class="oi oi-trash text-danger"></i>
+                                </button>
+                            </Tooltip>
+
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+
+        <div class="accordion" id="accordionInfo">
+            <div class="card">
+                <div class="card-header" id="headingInfo">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseInfo" aria-expanded="false" aria-controls="collapseInfo">
+                            <i class="fas fa-info-circle"></i> Information about Actions
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseInfo" class="collapse" aria-labelledby="headingInfo" data-parent="#accordionInfo">
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li>
+                                <i class="fa fa-pencil-alt"></i>  This action allows you to modify the user's details. Clicking the pencil icon will navigate you to the user edit form where you can change information such as username, email, birthdate, etc.
+                            </li>
+                            <li>
+                                <p></p>
+                            </li>
+                            <li>
+                                <i class="fas fa-arrow-up"></i>  This action enables you to upgrade the user's role within the system. By clicking the upward arrow icon, you can assign the user a higher level of access and responsibility.
+                            </li>
+                            <li>
+                                <p></p>
+                            </li>
+                            <li>
+                                <i class="oi oi-trash text-danger"></i>  This action will remove the user's account from the system. Clicking the trash icon will prompt you for confirmation before permanently deleting the user's data.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
     else
     {
@@ -109,9 +161,13 @@
 
 <div class="container-fluid text-center">
     <button class="btn btn-primary mt-3" @onclick="()=>FetchUsers(null)">Show more Users</button>
+    <p> 1 2 3 4 ...</p>
+
     <br />
     <br />
 </div>
+
+
 
 
 @code {
@@ -219,4 +275,11 @@
     {
         navManager.NavigateTo($"/user/edit/{id}", true);
     }
+
+    async Task PromoteRole(long id)
+    {
+        navManager.NavigateTo($"/user/promote/{id}", true);
+    }
+
+
 }
