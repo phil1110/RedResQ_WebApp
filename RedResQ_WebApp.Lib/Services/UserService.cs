@@ -195,6 +195,8 @@ namespace RedResQ_WebApp.Lib.Services
                 else
                 {
                     Console.WriteLine($"Error promoting user. Status code: {response.StatusCode}");
+                    Console.WriteLine($"Else Zweig");
+
                     return false;
                 }
             }

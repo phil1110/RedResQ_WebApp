@@ -1,0 +1,96 @@
+﻿@page "/article/view/{ArticleId:long}"
+@inject NavigationManager NavManager
+
+<PageTitle>Article</PageTitle>
+
+<div class="article-container">
+    <br />
+    @if (_article != null)
+    {
+        <div class="article-header">
+            <h1 class="article-title">@_article.Title</h1>
+            <p class="article-meta">By @_article.Author on @_article.Date.ToString("MMMM dd, yyyy")</p>
+        </div>
+@*         @if (!string.IsNullOrWhiteSpace(_article.Image?.Url))
+        {
+            <img src="@_article.Image.Url" alt="@_article.Image.Description" class="article-image" />
+        } *@
+        <div class="article-content">@(_article.Content)</div>
+
+        <br />
+
+        <div class="close-button-container">
+            <button class="btn btn-secondary" @onclick="Cancel">Close</button>
+        </div>
+
+    }
+    else
+    {
+        <p>Loading article data...</p>
+    }
+</div>
+
+<style>
+    .article-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    .article-header {
+        text-align: center;
+    }
+
+    .article-title {
+        font-family: 'Georgia', serif;
+        margin-bottom: 0.5em;
+    }
+
+    .article-meta {
+        font-family: 'Arial', sans-serif;
+        color: #888;
+        margin-bottom: 2em;
+    }
+
+    .article-image {
+        width: 100%;
+        height: auto;
+        margin-bottom: 2em;
+    }
+
+    .article-content {
+        font-family: 'Times New Roman', serif;
+        line-height: 1.6;
+        text-align: left;
+    }
+
+    .close-button-container {
+        text-align: center; 
+        margin-top: 20px;
+    }
+
+        .close-button-container .btn-secondary {
+            width: 50%; 
+            max-width: 300px; 
+            padding: 10px 0; 
+        }
+</style>
+
+@code {
+    [Parameter]
+    public long ArticleId { get; set; }
+
+    private Article? _article;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _article = await NewsService.GetArticleById(ArticleId);
+    }
+
+    private void Cancel()
+    {
+        NavManager.NavigateTo("/news");
+    }
+}

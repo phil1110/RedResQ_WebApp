@@ -20,20 +20,20 @@
             <tr>
                 <th>Filter by:</th>
                 <th>
-                    Country: 
-                    <InputSelect class="w-50" TValue="long?" @bind-Value="@_countryId">
+                    Country:
+                    <InputSelect class="w-50" TValue="long?" @bind-Value="@_countryId" @onchange="FetchArticles">
                         <option value="@(-1)">None</option>
-                        @foreach (Country? country in _countries)
+                        @foreach (var country in _countries)
                         {
                             <option value="@country.Id">@country.CountryName</option>
                         }
                     </InputSelect>
                 </th>
                 <th>
-                    Language: 
-                    <InputSelect class="w-50" TValue="long?" @bind-Value="@_languageId">
+                    Language:
+                    <InputSelect class="w-50" TValue="long?" @bind-Value="@_languageId" @onchange="FetchArticles">
                         <option value="@(-1)">None</option>
-                        @foreach (Language? language in _languages)
+                        @foreach (var language in _languages)
                         {
                             <option value="@language.Id">@language.Name</option>
                         }
@@ -91,6 +91,9 @@
                         <td>@article.Image?.Description</td>
                         <td>@article.Country.CountryName</td>
                         <td>
+                            <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="() => ViewArticle(article.Id)">
+                                <i class="fa fa-eye"></i>
+                            </button>
                             <button class="btn btn-light" style="background-color: transparent; border: none;" @onclick="() => EditArticle(article.Id)">
                                 <i class="fa fa-pencil-alt"></i>
                             </button>
@@ -117,7 +120,6 @@
 
 @code {
     private List<Article> _articles;
-
     private List<Country> _countries;
     private List<Language> _languages;
 
@@ -145,13 +147,14 @@
 
     private async Task FetchArticles()
     {
+        _articles.Clear();
         var articles = await NewsService.FetchArticles(_articleId, (_countryId > -1 ? _countryId : null), (_languageId > -1 ? _languageId : null));
 
         if (articles != null)
         {
             _articles.AddRange(articles);
-
-            _articleId = _articles[_articles.Count - 1].Id;
+            _articleId = _articles.LastOrDefault()?.Id;
+            _showButton = articles.Any();
         }
         else
         {
@@ -196,4 +199,10 @@
     {
         NavManager.NavigateTo("/createNews");
     }
+
+    private void ViewArticle(long articleId)
+    {
+        NavManager.NavigateTo($"/article/view/{articleId}");
+    }
+
 }

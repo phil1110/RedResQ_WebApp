@@ -1,6 +1,11 @@
 ﻿@page "/"
 @inject IJSRuntime js
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 <PageTitle>Dashboard</PageTitle>
 
 <div class="container-fluid">
@@ -9,6 +14,44 @@
             <h1>Dashboard</h1>
 
             <br />
+            <div class="accordion" id="accordionInfo">
+                <div class="card">
+                    <div class="card-header" id="headingInfo">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseInfo" aria-expanded="false" aria-controls="collapseInfo">
+                                <i class="fas fa-info-circle"></i> Information about Actions
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseInfo" class="collapse" aria-labelledby="headingInfo" data-parent="#accordionInfo">
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <i class="fa fa-eye"></i>    This action offers a detailed view of the item. Clicking on the eye icon navigates you to a detailed page, where comprehensive information about the item is presented, allowing for a thorough inspection without modification.
+                                </li>
+                                <p></p>
+                                <li>
+                                    <i class="fa fa-pencil-alt"></i>  This icon initiates the edit mode, directing you to a form where modifications can be made. It's designed for updating or altering information, ensuring the item remains current and accurate.
+                                </li>
+                                <li>
+                                    <p></p>
+                                </li>
+                                <li>
+                                    <i class="fas fa-arrow-up"></i>   Activating this icon escalates the item's status or priority within the system. It's used to enhance or elevate the item's position, granting it higher significance or access levels.
+                                </li>
+                                <li>
+                                    <p></p>
+                                </li>
+                                <li>
+                                    <i class="oi oi-trash text-danger"></i>   Clicking this icon triggers a deletion process, prompting for confirmation before removing the item from the system. It ensures the item is permanently deleted only after explicit approval.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+
             <div class="row">
                 <div class="col-md-3 mb-4">
                     <div class="card h-100 border border-primary">
