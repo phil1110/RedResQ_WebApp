@@ -1,6 +1,6 @@
 ﻿@page "/stats"
 @using ChartJs.Blazor.PieChart
-
+@using ChartJs.Blazor.BarChart
 
 <PageTitle>Statistics</PageTitle>
 
@@ -14,16 +14,24 @@
 	<li class="nav-item">
 		<button class="nav-link @(activeTab == "bar" ? "active" : "")" @onclick="@(() => SetActiveTab("bar"))">Bar Chart</button>
 	</li>
+	<li class="nav-item">
+		<button class="nav-link @(activeTab == "bar2" ? "active" : "")" @onclick="@(() => SetActiveTab("bar2"))">Bar Chart</button>
+	</li>
 </ul>
 
 @if (activeTab == "pie")
 {
 	<div>
-		<h3>Pie Chart</h3>
 		<Chart Config="_pieConfig"></Chart>
 	</div>
 }
 else if (activeTab == "bar")
+{
+	<div>
+@* 		<Chart Config="@_barConfig"></Chart>
+ *@	</div>
+}
+else if (activeTab == "bar2")
 {
 	<div>
 		<h3>Bar Chart</h3>
@@ -32,7 +40,9 @@ else if (activeTab == "bar")
 
 
 @code {
-	private PieConfig _pieConfig; 
+	private PieConfig _pieConfig;
+	private BarConfig _barConfig;
+
 	private string activeTab = "pie";
 
 	protected override void OnInitialized()
@@ -43,6 +53,18 @@ else if (activeTab == "bar")
 	private void SetActiveTab(string tabName)
 	{
 		activeTab = tabName;
+
+		if (activeTab == "pie")
+		{
+			ConfigurePieConfig();
+		}
+		else if (activeTab == "bar")
+		{
+		}
+		else if (activeTab == "bar2")
+		{
+		}
+
 		StateHasChanged();
 
 	}
@@ -52,14 +74,14 @@ else if (activeTab == "bar")
 		_pieConfig = new PieConfig();
 
 		_pieConfig.Options = new PieOptions
-		{
-			Responsive = true,
-			Title = new OptionsTitle
 			{
-				Display = true,
-				Text = "First PieChart"
-			}
-		};
+				Responsive = true,
+				Title = new OptionsTitle
+				{
+					Display = true,
+					Text = "First PieChart"
+				}
+			};
 
 		foreach (var quiz in new[] { "Earthquake", "Tornado", "Tsunami", "Flood", "Vulcano" })
 		{
@@ -67,19 +89,57 @@ else if (activeTab == "bar")
 		}
 
 		var dataset = new PieDataset<int>(new[] { 35, 50, 15, 45, 10 })
-		{
-			BackgroundColor = new[]
 			{
+				BackgroundColor = new[]
+				{
 				ColorUtil.ColorHexString(255, 215, 0),
 				ColorUtil.ColorHexString(0, 206, 209),
 				ColorUtil.ColorHexString(255, 111, 97),
 				ColorUtil.ColorHexString(144, 238, 144),
 				ColorUtil.ColorHexString(255, 0, 255)
 			}
-		};
+			};
 
 		_pieConfig.Data.Datasets.Add(dataset);
 	}
 
-	
+
+	private void ConfigureBarConfig()
+	{
+		_barConfig = new BarConfig
+			{
+				Options = new BarOptions
+				{
+					Responsive = true,
+					Title = new OptionsTitle
+					{
+						Display = true,
+						Text = "Bar Chart Example"
+					}
+				}
+			};
+
+		var labels = new[] { "Earthquake", "Tornado", "Tsunami", "Flood", "Vulcano" };
+		foreach (var label in labels)
+		{
+			_barConfig.Data.Labels.Add(label);
+		}
+
+		var dataset = new BarDataset<int>(new[] { 35, 50, 15, 45, 10 })
+			{
+				BackgroundColor = new[] {
+				ColorUtil.ColorHexString(255, 215, 0),
+				ColorUtil.ColorHexString(0, 206, 209),
+				ColorUtil.ColorHexString(255, 111, 97),
+				ColorUtil.ColorHexString(144, 238, 144),
+				ColorUtil.ColorHexString(255, 0, 255)
+			}
+			};
+
+		_barConfig.Data.Datasets.Add(dataset);
+	}
+
+
+
+
 }
