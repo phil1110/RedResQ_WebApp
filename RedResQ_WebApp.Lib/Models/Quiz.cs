@@ -8,13 +8,13 @@ namespace RedResQ_WebApp.Lib.Models
 {
     public class Quiz
     {
-        public long Id { get; set; }
+        public long? Id { get; set; }
 
         public string? Name { get; set; }    
 
-        public int MaxScore { get; set; }
+        public int? MaxScore { get; set; }
 
-        public Question[]? Questions { get; set; }
+        public List<Question>? Questions { get; set; } = new List<Question>();
 
         public QuizType? Type { get; set; }
     }
