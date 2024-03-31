@@ -1,6 +1,8 @@
-﻿@page "/quiz/test"
+﻿@page "/quiz"
 
 <h3>Quiz-Menu</h3>
+
+<br/>
 
 <div id="searchbox">
     <div id="form-cont">
@@ -56,42 +58,45 @@
     </div>
 </div>
 
-
-@if (Quizzes != null)
-{
-    <br />
-
-    <h3>Search result</h3>
-
-    <table class="table table-striped mt-3">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Max Score</th>
-                <th>Type-Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Quiz quiz in Quizzes)
-            {
+<div>
+    @if (Quizzes != null)
+    {
+        <br/>
+        <hr/>
+        <br />
+    
+        <h3>Search result</h3>
+    
+        <table class="table table-striped mt-3">
+            <thead>
                 <tr>
-                    <td>@quiz.Id</td>
-                    <td>@quiz.Name</td>
-                    <td>@quiz.MaxScore</td>
-                    <td>@quiz.Type?.Name</td>
-
-                    <td>
-                        <button class="btn btn-light" style="background-color: transparent; border: none;">
-                            <i class="oi oi-trash text-danger"></i>
-                        </button>
-                    </td>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Max Score</th>
+                    <th>Type-Name</th>
+                    <th>Action</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (Quiz quiz in Quizzes)
+                {
+                    <tr>
+                        <td>@quiz.Id</td>
+                        <td>@quiz.Name</td>
+                        <td>@quiz.MaxScore</td>
+                        <td>@quiz.Type?.Name</td>
+    
+                        <td>
+                            <button class="btn btn-light" style="background-color: transparent; border: none;">
+                                <i class="oi oi-trash text-danger"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
 
 @code {
     private static bool firstSearch = true;

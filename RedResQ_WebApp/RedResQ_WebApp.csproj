@@ -29,4 +29,8 @@
     <Folder Include="Pages\User\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Quiz\Quizbox.razor" />
+  </ItemGroup>
+
 </Project>
