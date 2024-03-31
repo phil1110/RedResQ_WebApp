@@ -1,20 +1,50 @@
 ﻿@page "/stats"
 @using ChartJs.Blazor.PieChart
 
-<h3>Chart Example</h3>
 
 <PageTitle>Statistics</PageTitle>
 
-<Chart Config="_pieConfig"></Chart>
+@* <Chart Config="_pieConfig"></Chart>
+ *@
 
+<ul class="nav nav-tabs">
+	<li class="nav-item">
+		<button class="nav-link @(activeTab == "pie" ? "active" : "")" @onclick="@(() => SetActiveTab("pie"))">Pie Chart</button>
+	</li>
+	<li class="nav-item">
+		<button class="nav-link @(activeTab == "bar" ? "active" : "")" @onclick="@(() => SetActiveTab("bar"))">Bar Chart</button>
+	</li>
+</ul>
+
+@if (activeTab == "pie")
+{
+	<div>
+		<h3>Pie Chart</h3>
+		<Chart Config="_pieConfig"></Chart>
+	</div>
+}
+else if (activeTab == "bar")
+{
+	<div>
+		<h3>Bar Chart</h3>
+	</div>
+}
 
 
 @code {
-	private PieConfig _pieConfig;
+	private PieConfig _pieConfig; 
+	private string activeTab = "pie";
 
 	protected override void OnInitialized()
 	{
 		ConfigurePieConfig();
+	}
+
+	private void SetActiveTab(string tabName)
+	{
+		activeTab = tabName;
+		StateHasChanged();
+
 	}
 
 	private void ConfigurePieConfig()
