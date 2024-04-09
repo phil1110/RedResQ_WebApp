@@ -1,0 +1,72 @@
+﻿<form @onsubmit="DisableForm" class="container w-75">
+    <h4>Core Information</h4>
+
+    <div class="form-group">
+        <label for="name">Quiz name:</label>
+        <input disabled="@_disable" name="name" class="form-control" id="name" placeholder="Quiz name" @bind="_name" required />
+        <br />
+    </div>
+
+    <div class="form-group">
+        <label for="max-score">Max score:</label>
+        <input disabled="@_disable" name="max-score" class="form-control" id="max-score" placeholder="Max score" @bind="_maxScore" required />
+        <br />
+    </div>
+
+    <div class="element-set">
+        <label for="input-quiztype">Quiz-Type</label>
+        <div class="input-element">
+            <InputSelect disabled="@_disable" class="form-control" TValue="long?" @bind-Value="_quizTypeId" id="input-quiztype">
+                @if (QuizTypes != null)
+                {
+                    foreach (QuizType qt in QuizTypes)
+                    {
+                        <option value="@qt.Id">@qt.Name</option>
+                    }
+                }
+            </InputSelect>
+        </div>
+    </div>
+
+    <br />
+
+    <button type="submit" disabled="@_disable" class="btn btn-info">Initialise Quiz</button>
+
+</form>
+
+@code {
+    private bool _disable = false;
+    private string? _name;
+    private int? _maxScore;
+    private long? _quizTypeId;
+    private QuizType[]? QuizTypes { get; set; }
+    private Quiz _quiz = new Quiz();
+
+
+    public event Action? FormSubmitted;
+
+    protected override async Task OnInitializedAsync()
+    {
+        QuizTypes = await QuizTypeService.Fetch();
+        _quizTypeId = QuizTypes[0].Id;
+    }
+
+    private async Task DisableForm()
+    {
+        await Task.Run(() =>
+        {
+            _disable = true;
+        });
+
+        FormSubmitted?.Invoke();
+    }
+
+    public Quiz GetQuiz()
+    {
+        _quiz.Name = _name;
+        _quiz.MaxScore = _maxScore;
+        _quiz.Type = QuizTypes!.Where(q => q.Id == _quizTypeId).FirstOrDefault();
+
+        return _quiz;
+    }
+}
