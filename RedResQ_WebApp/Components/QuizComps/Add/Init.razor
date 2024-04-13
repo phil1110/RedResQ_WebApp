@@ -64,7 +64,7 @@
     public Quiz GetQuiz()
     {
         _quiz.Name = _name;
-        _quiz.MaxScore = _maxScore;
+        _quiz.MaxScore = _maxScore!.Value;
         _quiz.Type = QuizTypes!.Where(q => q.Id == _quizTypeId).FirstOrDefault();
 
         return _quiz;

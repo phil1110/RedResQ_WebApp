@@ -14,12 +14,9 @@
 
     private void InitializeQuizView()
     {
-        _quizView = new QuizView()
-            {
-                Quiz = _init!.GetQuiz()
-            };
+        _quizView!.Quiz = _init!.GetQuiz();
 
-        StateHasChanged();
+        _quizView.Refresh();
     }
 
     protected override Task OnAfterRenderAsync(bool firstRender)

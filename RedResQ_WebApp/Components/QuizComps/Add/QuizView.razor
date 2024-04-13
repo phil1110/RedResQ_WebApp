@@ -1,8 +1,51 @@
-﻿@if (Quiz != null)
-{
-    <div>
-        <h3>QuizView</h3>
+﻿@page "/temp/test"
+@inject NavigationManager NavigationManager
 
-        <p>Hey there! shits working @Quiz.Name</p>
-    </div>
+@if (Quiz != null)
+{
+    <form @onsubmit="PublishQuiz">
+        <div class="mb-3 d-flex justify-content-between align-items-center">
+            <h2 class="align-content-end">
+                Edit the Quiz
+            </h2>
+
+            <button type="submit" class="btn btn-success d-inline">
+                Publish Quiz
+            </button>
+        </div>
+
+        <p>
+            Fine tuning of the Questions and their respective answers. Be careful with the Delete buttons though 🫡
+        </p>
+
+        @if (Quiz!.Questions.Count > 0)
+        {
+            <div class="w-100 border-start border-secondary p-3">
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <h5 class="align-content-end">
+                        Questions
+                    </h5>
+
+                    <button type="button" class="btn btn-danger d-inline" @onclick="ClearQuestions">
+                        Clear Questions
+                    </button>
+                </div>
+
+                <hr />
+
+                @foreach (Question question in Quiz.Questions)
+                {
+                    <br />
+
+                    <QuestionView @ref="QuestionViewRef" />
+
+                    <br />
+                }
+            </div>
+        }
+
+        <div class="text-center">
+            <button type="button" class="w-50 btn btn-primary" @onclick="AddQuestion">Add Question</button>
+        </div>
+    </form>
 }

@@ -77,5 +77,27 @@ namespace RedResQ_WebApp.Lib.Services
 
             return null!;
         }
+
+        public static async Task<bool> Add(Quiz quiz)
+        {
+            var client = Consts.GetHttpClient();
+            PathBuilder pathBuilder = new PathBuilder("quiz/add");
+
+            try
+            {
+                HttpResponseMessage response = await client.PostAsJsonAsync<Quiz>(pathBuilder.ToString(), quiz);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return false;
+        }
     }
 }

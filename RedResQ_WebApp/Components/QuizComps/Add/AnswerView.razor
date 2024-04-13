@@ -1,0 +1,13 @@
+﻿<form class="w-100 p-3 border border-1 rounded-top">
+    <div class="form-group">
+        <label for="answer-text">Answer</label>
+        <input name="answer-text" type="text" @bind-value="Answer.Text" placeholder="Enter the Answer as a string" class="form-control" required />
+    </div>
+
+    <br />
+
+    <div class="form-check">
+        <input title="answer-text" name="answer-text" type="checkbox" @bind-value="Answer.IsTrue" class="form-check-input" required />
+        <label for="answer-text" class="form-check-label">Is true?</label>
+    </div>
+</form>

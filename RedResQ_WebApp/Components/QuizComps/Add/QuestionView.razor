@@ -1,0 +1,34 @@
+﻿<div class="w-100">
+    <div class="form-group">
+        <label for="question-text">Question</label>
+        <input name="question-text" type="text" @bind-value="Question.Text" class="form-control" required />
+    </div>
+
+    <br />
+
+    @if (Question.Answers.Count > 0)
+    {
+        <div class="w-100 border-start border-danger p-3">
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+                <h5 class="align-content-end">
+                    Answers
+                </h5>
+
+                <button type="button" class="btn btn-danger d-inline" @onclick="ClearAnswers">
+                    Clear Answers
+                </button>
+            </div>
+
+            @foreach (Answer answer in Question.Answers)
+            {
+                <AnswerView @ref="AnswerViewRef" />
+
+                <br />
+            }
+        </div>
+    }
+
+    <div class="text-center">
+        <button type="button" class="w-50 btn btn-info" @onclick="AddAnswer">Add Answer</button>
+    </div>
+</div>

@@ -14,7 +14,7 @@ namespace RedResQ_WebApp.Lib.Models
 
         public int? MaxScore { get; set; }
 
-        public List<Question>? Questions { get; set; } = new List<Question>();
+        public List<Question> Questions { get; set; } = new List<Question>();
 
         public QuizType? Type { get; set; }
     }
