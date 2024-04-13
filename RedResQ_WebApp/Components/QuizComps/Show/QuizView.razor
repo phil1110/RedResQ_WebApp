@@ -1,0 +1,52 @@
+﻿@if (_quiz != null)
+{
+    <div class="quiz">
+        <h3>
+            Quiz No. <em>@_quiz.Id</em>
+        </h3>
+
+        <br />
+
+        <form class="quiz-details border rounded p-3">
+            <h6>
+                Quiz Details
+            </h6>
+
+            <br />
+
+            <div class="form-group row">
+                <label for="quiz-name" class="form-label col-sm-2">Name</label>
+
+                <div class="col">
+                    <input name="quiz-name" type="text" class="form-control-plaintext" readonly value="@_quiz.Name" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="quiz-max-score" class="form-label col-sm-2">Max Score</label>
+
+                <div class="col">
+                    <input name="quiz-max-score" type="text" class="form-control-plaintext" readonly value="@_quiz.MaxScore" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="quiz-type" class="form-label col-sm-2">Type</label>
+
+                <div class="col">
+                    <input name="quiz-type" type="text" class="form-control-plaintext" readonly value="@($"{_quiz.Type!.Name} (ID: {_quiz.Type!.Id})")" />
+                </div>
+            </div>
+        </form>
+
+        <br />
+        <hr />
+
+        <div class="questions">
+            @foreach (Question question in _quiz.Questions)
+            {
+                <QuestionBox Question="question" />
+            }
+        </div>
+    </div>
+}

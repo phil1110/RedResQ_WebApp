@@ -1,0 +1,41 @@
+﻿@inject NavigationManager NavigationManager
+
+<div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-light" style="background-color: transparent; border: none;" data-toggle="modal" data-target="#delete-quiz-modal-@Quiz?.Id" title="Delete Quiz No. @Quiz?.Id">
+        <i class="oi oi-trash text-danger"></i>
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="delete-quiz-modal-@Quiz?.Id" tabindex="-1" role="dialog" aria-labelledby="delete-quiz-modal-label-@Quiz?.Id" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold text-danger" id="delete-quiz-modal-label-@Quiz?.Id">WARNING!</h5>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <b>Are you sure you want to delete the following Quiz?</b>
+                        <br />
+                        <br />
+                        ID: @Quiz?.Id
+                        <br />
+                        Name: @Quiz?.Name
+                        <br />
+                        <br />
+                        <b class="text-danger">This cannot be undone!</b>
+                        <br />
+                        <br />
+                        If you are sure, double-click the red button below.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex w-100 justify-content-between flex-row-reverse">
+                        <button type="button" class="btn btn-success fw-bold" data-dismiss="modal">Keep the Quiz</button>
+                        <button type="button" class="btn btn-danger" @ondblclick="DeleteQuiz">Delete the Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

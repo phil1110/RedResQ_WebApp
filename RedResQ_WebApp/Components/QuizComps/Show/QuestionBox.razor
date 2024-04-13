@@ -1,0 +1,31 @@
+﻿@if(Question != null)
+{
+    <div class="question border-start border-secondary ps-3 mt-5">
+        <h5>
+            Question No. <em>@Question.Id</em>
+        </h5>
+
+        <br />
+
+        <div class="form-group row">
+            <label for="question-text" class="form-label col-sm-2">Question</label>
+
+            <div class="col">
+                <input name="question-text" class="form-control-plaintext" readonly value="@Question.Text" />
+            </div>
+        </div>
+
+        <br />
+        <hr />
+        <br />
+
+        <div class="answers">
+            @foreach(Answer answer in Question.Answers)
+            {
+                <div class="pb-3">
+                    <AnswerBox Answer="answer" />
+                </div>
+            }
+        </div>
+    </div>
+}

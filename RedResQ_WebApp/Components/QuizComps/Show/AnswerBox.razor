@@ -1,0 +1,19 @@
+﻿@if(Answer != null)
+{
+    <div class="answer @(Answer.IsTrue ? "answer-true" : "answer-false") border-start border-5 border-dark p-2 rounded-end">
+
+        <h6 class="fw-bold">
+            Answer No. <em>@Answer.Id</em>
+        </h6>
+
+        <div class="form-group row">
+            <label for="answer-text" class="form-label col-sm-2">
+                Answer
+            </label>
+
+            <div class="col">
+                <input type="text" class="form-control-plaintext" readonly name="answer-text" value="@Answer.Text" />
+            </div>
+        </div>
+    </div>
+}

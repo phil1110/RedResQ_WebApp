@@ -1,0 +1,28 @@
+﻿@using RedResQ_WebApp.Components.QuizComps.Show
+
+<div>
+    <button class="btn btn-light bg-transparent border-0" type="button" @onclick="TogglePopUp">
+        <i class="oi oi-eye text-primary"></i>
+    </button>
+
+    @if (_showPopUp && Quiz != null)
+    {
+        <div class="quiz-popup vh-100 vw-100">
+
+            <div class="quiz-container">
+                <div class="popup-header p-3">
+                    <h3>Inspect Quiz</h3>
+
+                    <button class="btn fw-bold" type="button" title="Close Quiz inspection" @onclick="TogglePopUp">
+                        X
+                    </button>
+                </div>
+
+                <div class="popup-content p-4">
+                    <QuizView QuizId="Quiz.Id!.Value" />
+                </div>
+
+            </div>
+        </div>
+    }
+</div>

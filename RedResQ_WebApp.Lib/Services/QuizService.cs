@@ -99,5 +99,29 @@ namespace RedResQ_WebApp.Lib.Services
 
             return false;
         }
+
+        public static async Task<bool> Delete(long quizId)
+        {
+            var client = Consts.GetHttpClient();
+            PathBuilder pathBuilder = new PathBuilder("quiz/delete");
+
+            pathBuilder.AddParameter("id", quizId.ToString()!);
+
+            try
+            {
+                HttpResponseMessage response = await client.DeleteAsync(pathBuilder.ToString());
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return false;
+        }
     }
 }

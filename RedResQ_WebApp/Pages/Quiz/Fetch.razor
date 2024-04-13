@@ -1,4 +1,5 @@
-﻿@page "/quiz"
+﻿@using RedResQ_WebApp.Components.QuizComps.Fetch
+@page "/quiz"
 
 <h3>Quiz-Menu</h3>
 
@@ -87,9 +88,11 @@
                         <td>@quiz.Type?.Name</td>
     
                         <td>
-                            <button class="btn btn-light" style="background-color: transparent; border: none;">
-                                <i class="oi oi-trash text-danger"></i>
-                            </button>
+                            <div class="d-flex">
+                                <ShowButton Quiz="quiz" />
+
+                                <DeleteButton Quiz="quiz" />
+                            </div>
                         </td>
                     </tr>
                 }

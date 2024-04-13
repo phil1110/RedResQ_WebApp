@@ -54,7 +54,7 @@ namespace RedResQ_WebApp.Components.QuizComps.Add
 
             if (wasSuccessful)
             {
-                NavigationManager.NavigateTo("/");
+                NavigationManager.NavigateTo("/quiz");
             }
         }
     }
