@@ -8,7 +8,7 @@ namespace RedResQ_WebApp.Lib.Models
 {
     public class QuizType
     {
-        public long Id { get; set; }
+        public long? Id { get; set; }
 
         public string? Name { get; set; }
     }

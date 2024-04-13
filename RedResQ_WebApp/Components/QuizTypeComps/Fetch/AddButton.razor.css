@@ -1,4 +1,4 @@
-﻿.quiz-popup {
+﻿.quiztype-popup {
     z-index: 10;
     position: fixed;
     top: 0;
@@ -8,11 +8,10 @@
     justify-content: center;
 }
 
-.quiz-container {
+.quiztype-container {
     z-index: 15;
-    height: 95vh;
     width: 50vw;
-    margin: 2.5vh 0;
+    margin: auto 0;
     background-color: #ffffff;
     border: 2px solid #747474;
     border-radius: 10px;
@@ -21,12 +20,12 @@
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-.quiz-container::-webkit-scrollbar {
+.quiztype-container::-webkit-scrollbar {
     display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
-.quiz-container {
+.quiztype-container {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }

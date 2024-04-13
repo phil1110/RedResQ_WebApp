@@ -1,0 +1,16 @@
+﻿@using RedResQ_WebApp.Components.QuizTypeComps.Fetch
+@page "/quiztype"
+
+<div class="d-flex w-100 justify-content-between">
+    <h3>Existing QuizTypes</h3>
+    
+    <AddButton />
+</div>
+
+<br />
+
+<QuizTypeList />
+
+@code {
+    private List<QuizType> QuizTypes = new List<QuizType>();
+}

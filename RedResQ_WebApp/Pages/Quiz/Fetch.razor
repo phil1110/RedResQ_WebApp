@@ -60,7 +60,7 @@
 </div>
 
 <div>
-    @if (Quizzes != null)
+    @if (Quizzes.Count > 0)
     {
         <br/>
         <hr/>
@@ -91,49 +91,18 @@
                             <div class="d-flex">
                                 <ShowButton Quiz="quiz" />
 
-                                <DeleteButton Quiz="quiz" />
+                                <DeleteButton Quiz="quiz" /> 
                             </div>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+
+        <div class="@(hideAddButton ? "d-none" : "text-center")">
+            <button type="button" class="btn btn-primary w-25" title="Load more quizzes" @onclick="LoadMoreQuizzes">
+                Load more quizzes
+            </button>
+        </div>
     }
 </div>
-
-@code {
-    private static bool firstSearch = true;
-
-    private long? Id { get; set; }
-
-    private int? Amount { get; set; }
-
-    private string? Query { get; set; }
-
-    private long? QuizTypeId { get; set; }
-
-    private QuizType[]? QuizTypes { get; set; }
-
-    private Quiz[]? Quizzes { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        QuizTypes = await QuizTypeService.Fetch();
-    }
-
-    private async Task Search()
-    {
-        long? tempId = Id;
-
-        if (firstSearch)
-        {
-            firstSearch = false;
-        }
-        if (tempId.HasValue)
-        {
-            tempId--;
-        }
-
-        Quizzes = await QuizService.Fetch(tempId, Amount, Query, QuizTypeId);
-    }
-}

@@ -1,0 +1,28 @@
+﻿@if (QuizTypes.Count > 0)
+{
+    <div>    
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (QuizType quizType in QuizTypes)
+                {
+                    <tr>
+                        <td>@quizType.Id</td>
+                        <td>@quizType.Name</td>
+                        <td>
+                            <div class="d-flex">
+                                <DeleteButton QuizType="quizType" />
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

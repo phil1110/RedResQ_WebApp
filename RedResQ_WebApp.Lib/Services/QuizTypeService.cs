@@ -12,19 +12,11 @@ namespace RedResQ_WebApp.Lib.Services
 {
     public class QuizTypeService
     {
-        public static async Task<QuizType[]> Fetch(long? id = null, int? amount = null, string? name = null)
+        public static async Task<QuizType[]> Fetch(string? name = null)
         {
             var client = Consts.GetHttpClient();
             PathBuilder pathBuilder = new PathBuilder("quiztype/fetch");
 
-            if (id.HasValue)
-            {
-                pathBuilder.AddParameter("id", id.ToString()!);
-            }
-            if (amount.HasValue)
-            {
-                pathBuilder.AddParameter("amount", amount.ToString()!);
-            }
             if (name != null)
             {
                 pathBuilder.AddParameter("name", name!);
@@ -125,7 +117,7 @@ namespace RedResQ_WebApp.Lib.Services
         public static async Task<bool> Delete(long id)
         {
             var client = Consts.GetHttpClient();
-            PathBuilder pathBuilder = new PathBuilder("quiztype/edit");
+            PathBuilder pathBuilder = new PathBuilder("quiztype/delete");
 
             pathBuilder.AddParameter("id", id.ToString());
 
