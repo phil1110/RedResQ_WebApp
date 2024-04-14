@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\HazardComps\" />
     <Folder Include="Pages\User\" />
   </ItemGroup>
 
