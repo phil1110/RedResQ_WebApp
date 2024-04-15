@@ -1,0 +1,10 @@
+﻿.adder-container {
+    transition: height ease-in-out 1s;
+    overflow: hidden;
+    height: min-content;
+}
+
+.hide {
+    height: 0;
+    transition: height ease-in-out 1s;
+}
