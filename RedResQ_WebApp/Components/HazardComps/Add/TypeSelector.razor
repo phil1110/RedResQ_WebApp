@@ -35,10 +35,12 @@
                     </button>
                 </div>
             }
-
-            <div class="adder-container@(_showAdder ? "" : " hide") border border-1 rounded-3">
-                <TypeAdder AfterAction="@(async () => await LoadTypes())" TogglerAction="ToggleAdder" />
-            </div>
+            else
+            {
+                <div class="adder-container border border-1 rounded-3">
+                    <TypeAdder AfterAction="@(async () => await LoadTypes())" TogglerAction="ToggleAdder" />
+                </div>
+            }
         </div>
     </div>
 </div>
