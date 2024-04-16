@@ -4,34 +4,31 @@
 
 <PageTitle>Statistics</PageTitle>
 
-@* <Chart Config="_pieConfig"></Chart>
- *@
-
 <ul class="nav nav-tabs">
 	<li class="nav-item">
-		<button class="nav-link @(activeTab == "pie" ? "active" : "")" @onclick="@(() => SetActiveTab("pie"))">Pie Chart</button>
+		<button class="nav-link @(activeTab == statTypes[0] ? "active" : "")" @onclick="@(() => SetActiveTab(statTypes[0]))">@(statTypes[0].ToString())</button>
 	</li>
 	<li class="nav-item">
-		<button class="nav-link @(activeTab == "bar" ? "active" : "")" @onclick="@(() => SetActiveTab("bar"))">Bar Chart</button>
+		<button class="nav-link @(activeTab == statTypes[1] ? "active" : "")" @onclick="@(() => SetActiveTab(statTypes[1]))">@(statTypes[1].ToString())</button>
 	</li>
 	<li class="nav-item">
-		<button class="nav-link @(activeTab == "bar2" ? "active" : "")" @onclick="@(() => SetActiveTab("bar2"))">Bar Chart</button>
+		<button class="nav-link @(activeTab == statTypes[2] ? "active" : "")" @onclick="@(() => SetActiveTab(statTypes[2]))">@(statTypes[2].ToString())</button>
 	</li>
 </ul>
 
-@if (activeTab == "pie")
+@if (activeTab == statTypes[0])
 {
 	<div>
 		<Chart Config="_pieConfig"></Chart>
 	</div>
 }
-else if (activeTab == "bar")
+else if (activeTab == statTypes[1])
 {
 	<div>
 @* 		<Chart Config="@_barConfig"></Chart>
  *@	</div>
 }
-else if (activeTab == "bar2")
+else if (activeTab == statTypes[2])
 {
 	<div>
 		<h3>Bar Chart</h3>
@@ -42,11 +39,14 @@ else if (activeTab == "bar2")
 @code {
 	private PieConfig _pieConfig;
 	private BarConfig _barConfig;
+	private string[] statTypes;
 
 	private string activeTab = "pie";
 
-	protected override void OnInitialized()
+	protected async override Task OnInitializedAsync()
 	{
+		statTypes = await StatService.GetStatTypes();
+
 		ConfigurePieConfig();
 	}
 
@@ -54,20 +54,39 @@ else if (activeTab == "bar2")
 	{
 		activeTab = tabName;
 
-		if (activeTab == "pie")
+		if (activeTab == statTypes[0])
 		{
 			ConfigurePieConfig();
 		}
-		else if (activeTab == "bar")
+		else if (activeTab == statTypes[1])
 		{
+
 		}
-		else if (activeTab == "bar2")
+		else if (activeTab == statTypes[2])
 		{
+
 		}
 
 		StateHasChanged();
-
 	}
+
+	private async void ConfigureLeastAtemptStat()
+	{
+		Dictionary<string, long> stat;
+		stat = await StatService.GetStatByType(statTypes[0]);
+
+		_barConfig = new BarConfig();
+		_barConfig.Options = new BarOptions
+		{
+			Responsive = true,
+			Title = new OptionsTitle
+			{
+				Display = true,
+				Text = statTypes[0].ToString()
+			}
+		};
+	}
+
 
 	private void ConfigurePieConfig()
 	{
@@ -102,44 +121,4 @@ else if (activeTab == "bar2")
 
 		_pieConfig.Data.Datasets.Add(dataset);
 	}
-
-
-	private void ConfigureBarConfig()
-	{
-		_barConfig = new BarConfig
-			{
-				Options = new BarOptions
-				{
-					Responsive = true,
-					Title = new OptionsTitle
-					{
-						Display = true,
-						Text = "Bar Chart Example"
-					}
-				}
-			};
-
-		var labels = new[] { "Earthquake", "Tornado", "Tsunami", "Flood", "Vulcano" };
-		foreach (var label in labels)
-		{
-			_barConfig.Data.Labels.Add(label);
-		}
-
-		var dataset = new BarDataset<int>(new[] { 35, 50, 15, 45, 10 })
-			{
-				BackgroundColor = new[] {
-				ColorUtil.ColorHexString(255, 215, 0),
-				ColorUtil.ColorHexString(0, 206, 209),
-				ColorUtil.ColorHexString(255, 111, 97),
-				ColorUtil.ColorHexString(144, 238, 144),
-				ColorUtil.ColorHexString(255, 0, 255)
-			}
-			};
-
-		_barConfig.Data.Datasets.Add(dataset);
-	}
-
-
-
-
 }
