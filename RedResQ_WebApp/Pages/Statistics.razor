@@ -107,16 +107,16 @@ else if (activeTab == statTypes[2])
 			_pieConfig.Data.Labels.Add(quiz);
 		}
 
-		var dataset = new PieDataset<int>(new[] { 35, 50, 15, 45, 10 })
+		var dataset = new PieDataset<long>()
 			{
 				BackgroundColor = new[]
 				{
-				ColorUtil.ColorHexString(255, 215, 0),
-				ColorUtil.ColorHexString(0, 206, 209),
-				ColorUtil.ColorHexString(255, 111, 97),
-				ColorUtil.ColorHexString(144, 238, 144),
-				ColorUtil.ColorHexString(255, 0, 255)
-			}
+					ColorUtil.ColorHexString(255, 215, 0),
+					ColorUtil.ColorHexString(0, 206, 209),
+					ColorUtil.ColorHexString(255, 111, 97),
+					ColorUtil.ColorHexString(144, 238, 144),
+					ColorUtil.ColorHexString(255, 0, 255)
+				}
 			};
 
 		_pieConfig.Data.Datasets.Add(dataset);
