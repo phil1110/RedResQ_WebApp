@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\User\**" />
+    <Content Remove="Pages\User\**" />
+    <EmbeddedResource Remove="Pages\User\**" />
+    <None Remove="Pages\User\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Pages\NewFile.txt" />
   </ItemGroup>
 
@@ -23,10 +30,6 @@
 
   <ItemGroup>
     <None Include="wwwroot\css\custom\map\map.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\User\" />
   </ItemGroup>
 
 </Project>

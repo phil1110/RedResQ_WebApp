@@ -1,0 +1,24 @@
+﻿@using RedResQ_WebApp.Components.StatComps
+@page "/stats"
+
+@if (_statTypes != null && _statChapters != null)
+{
+    <div class="w-50">
+        @foreach (string chapter in _statChapters)
+        {
+            <div class="container border-2">
+                <div class="chapter-header border-bottom">
+                    <h4>@chapter</h4>
+                </div>
+
+                <div class="chapter-content p-3 border-bottom">
+                    @foreach (string statType in _statTypes.Where(x => x.Contains(chapter)).ToArray())
+                    {
+                        <Stat StatType="@statType" />
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+

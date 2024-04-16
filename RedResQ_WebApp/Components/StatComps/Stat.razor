@@ -1,0 +1,27 @@
+﻿@using RedResQ_WebApp.Components.StatComps.StatTypes
+
+<div>
+    <div class="button-container my-2">
+        <button class="btn bg-transparent border-primary w-100" title="Show Statistics" @onclick="ToggleOverlay">@_chartName</button>
+    </div>
+
+    <div class="stat-wrapper vh-100 vw-100 @(_showOverlay ? "" : "hide-overlay")" @onclick="ToggleOverlay">
+        <div class="stat-overlay p-3 border border-1 rounded rounded-3 @(_showOverlay ? "show" : "initial")" @onclick:stopPropagation="true">
+            @if (_chartName != null && _chartType.HasValue && _data != null)
+            {
+                @if (_chartType == 1)
+                {
+                    <BarChart Title="@_chartName" Data="_data" />
+                }
+                @if (_chartType == 2)
+                {
+                    <PieChart Title="@_chartName" Data="_data" />
+                }
+                @if (_chartType == 3)
+                {
+                    <LineChart Title="@_chartName" Data="_data" />
+                }
+            }
+        </div>
+    </div>
+</div>

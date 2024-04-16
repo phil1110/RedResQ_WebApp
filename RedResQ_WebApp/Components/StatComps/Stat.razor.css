@@ -1,0 +1,22 @@
+﻿.stat-wrapper {
+    position: fixed;
+    display: flex;
+    left: 0;
+    top: 0;
+    background-color: #d4d4d428;
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+}
+
+    .stat-wrapper.hide-overlay {
+        display: none;
+    }
+
+
+.stat-overlay {
+    z-index: 15;
+    width: 50vw;
+    height: min-content;
+    background-color: white;
+}
