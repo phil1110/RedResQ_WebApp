@@ -35,19 +35,19 @@ namespace RedResQ_WebApp.Lib.Services
 			return null!;
 		}
 
-		public static async Task<Dictionary<string, long>> GetStatByType(string statType)
+		public static async Task<Dictionary<string, int>> GetStatByType(string statType)
 		{
 			var client = Consts.GetHttpClient();
 			PathBuilder pathBuilder = new PathBuilder("stat");
+
 			pathBuilder.AddParameter("statName", statType);
-			// string , long 
 
 			try
 			{
 				HttpResponseMessage response = await client.GetAsync(pathBuilder.ToString());
 				if (response.IsSuccessStatusCode)
 				{
-					return await response.Content.ReadFromJsonAsync<Dictionary<string, long>>();
+					return await response.Content.ReadFromJsonAsync<Dictionary<string, int>>();
 				}
 				else
 				{
